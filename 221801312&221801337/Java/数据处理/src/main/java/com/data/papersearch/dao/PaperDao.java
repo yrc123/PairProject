@@ -1,15 +1,13 @@
 package com.data.papersearch.dao;
 
-import com.data.papersearch.pojo.Paper;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
-
-@Repository
+@Mapper
 public interface PaperDao {
-	public int getKeywordCount(String keyword);
-	public int getAuthorCount(String keyword);
-	public int getMeetCount(String keyword);
+	public int getKeywordCount(String name);
+	public int getAuthorCount(String name);
+	public int getMeetCount(String name);
+	public int getPaperCount(String name);
 	public int insertKeyword(String keyword);
 	public int insertMeet(String keyword);
 	public int insertAuthor(String keyword);

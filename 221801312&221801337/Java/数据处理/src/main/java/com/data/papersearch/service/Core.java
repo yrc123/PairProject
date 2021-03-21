@@ -6,6 +6,7 @@ import com.data.papersearch.dao.PaperDao;
 import com.data.papersearch.pojo.Paper;
 import com.data.papersearch.pojo.PaperAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileReader;
@@ -17,6 +18,7 @@ import java.util.Scanner;
 public class Core {
 	@Autowired
 	PaperDao dao;
+
 	PaperAdapter pa;
 	String path;
 	String meetName;
@@ -26,7 +28,7 @@ public class Core {
 		this.path=path;
 	}
 
-	private List<Paper> getPapers() throws IOException {
+	public List<Paper> getPapers() throws IOException {
 		File dir = new File(path);
 		File[] files = dir.listFiles();
 
@@ -49,6 +51,7 @@ public class Core {
 		}
 		return papers;
 	}
+	@Transactional
 	public void savePaper(Paper paper){
 		if(dao.getMeetCount(paper.getMeet())==0){
 			dao.insertMeet(paper.getMeet());
@@ -63,12 +66,15 @@ public class Core {
 				dao.insertAuthor(author);
 			}
 		}
-		dao.insertPaper(
-				paper.getTitle(),
-				paper.getUrl(),
-				paper.getPublicationYear(),
-				paper.getAbstract(),
-				dao.findMeetIdByName(paper.getMeet()));
+		System.out.println(paper.getMeet()+": "+paper.getTitle());
+		if(dao.getPaperCount(paper.getTitle())==0){
+			dao.insertPaper(
+					paper.getTitle(),
+					paper.getUrl(),
+					paper.getPublicationYear(),
+					paper.getAbstract(),
+					dao.findMeetIdByName(paper.getMeet()));
+		}
 		int paperId=dao.findPaperIdByName(paper.getTitle());
 		for (String author : paper.getAuthors()) {
 			dao.insertPaperAuthor(paperId,dao.findAuthorIdByName(author));
@@ -80,13 +86,14 @@ public class Core {
 	}
 	public void start(){
 		List<Paper> papers = null;
+		Core core=this;
 		try {
 			papers = getPapers();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		for (Paper paper : papers) {
-			savePaper(paper);
+			this.savePaper(paper);
 		}
 	}
 	public PaperAdapter getPa() {

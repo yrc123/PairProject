@@ -2,7 +2,6 @@ package com.data.papersearch.pojo;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.annotation.JSONField;
 
 import java.io.File;
 import java.text.ParseException;
@@ -21,6 +20,7 @@ public class Paper {
 	List<String>authors;
 
 	public String getTitle() {
+		if(title==null)return "";
 		return title;
 	}
 
@@ -29,6 +29,7 @@ public class Paper {
 	}
 
 	public String getUrl() {
+		if(url==null)return "";
 		return url;
 	}
 
@@ -37,6 +38,7 @@ public class Paper {
 	}
 
 	public Date getPublicationYear() {
+//		if(publicationYear==null)return new Date();
 		return publicationYear;
 	}
 
@@ -45,14 +47,21 @@ public class Paper {
 	}
 
 	public String getAbstract() {
+		if(Abstract==null)return "";
 		return Abstract;
 	}
 
+
 	public void setAbstract(String anAbstract) {
-		Abstract = anAbstract;
+		if(anAbstract==null){
+			Abstract="";
+		}else{
+			Abstract = anAbstract.substring(0,anAbstract.length()>255?254:anAbstract.length()-1);
+		}
 	}
 
 	public List<String> getKeywords() {
+		if(keywords==null)return new ArrayList<>();
 		return keywords;
 	}
 
@@ -61,6 +70,7 @@ public class Paper {
 	}
 
 	public String getMeet() {
+		if(Meet==null)return "";
 		return Meet;
 	}
 
@@ -69,6 +79,7 @@ public class Paper {
 	}
 
 	public List<String> getAuthors() {
+		if(authors==null)return new ArrayList<>();
 		return authors;
 	}
 
@@ -82,6 +93,7 @@ public class Paper {
 				Paper paper = new Paper();
 				paper.setTitle(jo.getString("title"));
 				paper.setAbstract(jo.getString("abstract"));
+				if(paper.getAbstract()==null)paper.setAbstract("");
 				List<String> authors=new ArrayList<>();
 				final JSONArray ja = jo.getJSONArray("authors");
 				for (int i = 0; i < ja.size(); i++) {
@@ -93,6 +105,8 @@ public class Paper {
 							jo.getJSONArray("keywords")
 									.getJSONObject(0).getJSONArray("kwd").toJavaList(String.class)
 					);
+				else
+					paper.setKeywords(new ArrayList<>());
 				paper.setMeet(meetName);
 				final SimpleDateFormat year = new SimpleDateFormat("yyyy");
 				Date date = null;
@@ -114,6 +128,7 @@ public class Paper {
 				Paper paper = new Paper();
 				paper.setTitle(jo.getString("论文名称"));
 				paper.setAbstract(jo.getString("摘要"));
+				if(paper.getAbstract()==null)paper.setAbstract("");
 				List<String> authors=new ArrayList<>();
 				paper.setKeywords(jo.getJSONArray("关键词").toJavaList(String.class));
 				paper.setMeet(meetName);
