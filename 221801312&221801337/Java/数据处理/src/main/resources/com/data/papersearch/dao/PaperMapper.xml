@@ -15,14 +15,20 @@
     <select id="getPaperCount" resultType="int">
         select count(*) from paper where title = #{name}
     </select>
+    <select id="getPaperAuthorCount" resultType="int">
+        select count(*) from paper_author where paper_id = #{param1} and author_id=#{param2}
+    </select>
+    <select id="getPaperKeywordCount" resultType="int">
+        select count(*) from paper_keyword where paper_id = #{param1} and keyword_id=#{param2}
+    </select>
     <insert id="insertKeyword">
-        insert ignore into keyword(keyword)  values(#{name})
+        insert into keyword(keyword)  values(#{name})
     </insert>
     <insert id="insertMeet" >
-        insert ignore into meet (name) values(#{name})
+        insert into meet (name) values(#{name})
     </insert>
     <insert id="insertAuthor">
-        insert ignore into author (name) values(#{name})
+        insert into author (name) values(#{name})
     </insert>
     <select id="findMeetIdByName" resultType="int">
         select id from meet where name=#{name}
@@ -37,12 +43,12 @@
         select id from keyword where keyword=#{name}
     </select>
     <insert id="insertPaper">
-        insert ignore into paper (title,url,publication_year,abstract,meet_id) values(#{o[0]},#{o[1]},#{o[2]},#{o[3]},#{o[4]})
+        insert into paper (title,url,publication_year,abstract,meet_id) values(#{o[0]},#{o[1]},#{o[2]},#{o[3]},#{o[4]})
     </insert>
     <insert id="insertPaperAuthor">
-        insert ignore into paper_author (paper_id,author_id) values (#{param1},#{param2})
+        insert into paper_author (paper_id,author_id) values (#{param1},#{param2})
     </insert>
     <insert id="insertPaperKeyword">
-        insert ignore into paper_keyword (paper_id,keyword_id) values (#{param1},#{param2})
+        insert into paper_keyword (paper_id,keyword_id) values (#{param1},#{param2})
     </insert>
 </mapper>

@@ -77,10 +77,14 @@ public class Core {
 		}
 		int paperId=dao.findPaperIdByName(paper.getTitle());
 		for (String author : paper.getAuthors()) {
-			dao.insertPaperAuthor(paperId,dao.findAuthorIdByName(author));
+			int authorId=dao.findAuthorIdByName(author);
+			if(dao.getPaperAuthorCount(paperId,authorId)==0)
+			dao.insertPaperAuthor(paperId,authorId);
 		}
 		for (String keyword : paper.getKeywords()) {
-			dao.insertPaperKeyword(paperId,dao.findKeywordIdByName(keyword));
+			int keywordId=dao.findKeywordIdByName(keyword);
+			if(dao.getPaperKeywordCount(paperId,keywordId)==0)
+				dao.insertPaperKeyword(paperId,keywordId);
 		}
 
 	}

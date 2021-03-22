@@ -8,6 +8,8 @@ public interface PaperDao {
 	public int getAuthorCount(String name);
 	public int getMeetCount(String name);
 	public int getPaperCount(String name);
+	public int getPaperAuthorCount(int paperId,int authorId);
+	public int getPaperKeywordCount(int paperId,int keywordId);
 	public int insertKeyword(String keyword);
 	public int insertMeet(String keyword);
 	public int insertAuthor(String keyword);
