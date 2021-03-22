@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
 import java.io.*;
 
 @SpringBootApplication()
-@PropertySource(value={"secret.properties"})
+@PropertySource(value={"application-local.properties"})
 
 public class PapersearchApplication {
 	public static void main(String[] args) {

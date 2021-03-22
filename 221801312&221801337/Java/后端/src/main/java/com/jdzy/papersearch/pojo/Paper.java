@@ -1,7 +1,11 @@
 package com.jdzy.papersearch.pojo;
 
+import org.apache.ibatis.type.Alias;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.Date;
 
+@Alias(value = "paper")
 public class Paper {
     int id;
     String title;
