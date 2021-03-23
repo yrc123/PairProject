@@ -10,4 +10,6 @@ import java.util.Map;
 public interface KeywordDao {
 	Integer findKeywordIdByName(String keyword);
 	List<Map<String,String>> findTopKeyword(int meetId, Date publicationYear);
+	List<String> findSimilarKeyword(String keyword,Integer limit);
+
 }

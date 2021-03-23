@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdzy.papersearch.dao.PaperDao">
-    <select id="findPaperByKeyword" resultType="com.jdzy.papersearch.pojo.Paper">
+    <select id="findPaperByKeywordId" resultType="com.jdzy.papersearch.pojo.Paper">
 		select paper.id as id, paper.title as title,paper.url as url
 		from paper, paper_keyword
 		where paper_keyword.keyword_id=#{keywordId}

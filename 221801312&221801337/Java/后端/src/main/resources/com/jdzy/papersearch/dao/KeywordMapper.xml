@@ -6,6 +6,12 @@
     <select id="findKeywordIdByName" resultType="int">
         select id from keyword where keyword=#{keyword};
     </select>
+    <select id="findSimilarKeyword" resultType="string">
+        select keyword
+        from keyword
+        where keyword like concat("%",concat(#{keyword},"%"))
+                limit #{limit}
+    </select>
     <select id="findTopKeyword" resultType="map">
         select keyword.id as keyword_id, keyword.keyword as keyword_name,pkeyword.keyword_num as keyword_num
         from

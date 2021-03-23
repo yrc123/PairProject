@@ -12,15 +12,12 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.TestPropertySources;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.sql.Date;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.text.ParseException;
 
 @SpringBootTest
-@ActiveProfiles("local-dev")
 class KeywordDaoTest {
 	@Autowired
 	KeywordDao dao;
@@ -29,6 +26,13 @@ class KeywordDaoTest {
 	void findKeywordIdByName() {
 		Assert.assertEquals(Integer.valueOf(1),dao.findKeywordIdByName("Mirrors"));
 		Assert.assertEquals(Integer.valueOf(12752),dao.findKeywordIdByName("Vision for graphics"));
+	}
+	@Test
+	void findSimilarKeyword(){
+		final List<String> word = dao.findSimilarKeyword("2-",null);
+		Assert.assertEquals(word.get(0),"2-point motion estimation");
+		Assert.assertEquals(word.get(1),"2-sphere");
+		Assert.assertEquals(word.get(2),"AI2-THOR");
 	}
 
 	@Test

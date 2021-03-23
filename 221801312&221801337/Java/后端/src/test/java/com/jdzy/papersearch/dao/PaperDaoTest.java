@@ -10,8 +10,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class PaperDaoTest {
 	@Autowired
@@ -19,7 +17,7 @@ class PaperDaoTest {
 
 	@Test
 	void findPaperByKeyword() throws ParseException {
-		List<Paper> papers = dao.findPaperByKeyword(6, new SimpleDateFormat("yyyy").parse("2007"), 2);
+		List<Paper> papers = dao.findPaperByKeywordId(6, new SimpleDateFormat("yyyy").parse("2007"), 2);
 		Assert.assertEquals(85L,papers.size());
 		Assert.assertEquals(3259,papers.get(0).getId());
 	}
