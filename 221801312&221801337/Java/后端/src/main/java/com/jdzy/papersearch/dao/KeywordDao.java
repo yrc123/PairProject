@@ -8,6 +8,6 @@ import java.util.Map;
 
 @Mapper
 public interface KeywordDao {
-	public Integer findKeywordIdByName(String keyword);
-	public List<Map<String,String>> findTopKeyword(int meetId, Date publicationYear);
+	Integer findKeywordIdByName(String keyword);
+	List<Map<String,String>> findTopKeyword(int meetId, Date publicationYear);
 }

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.PropertySource;
 import javax.annotation.PostConstruct;
 
 @SpringBootApplication
-@PropertySource(value="classpath:application-local.properties")
+//@PropertySource(value= "classpath:application-local.properties")
 public class PaperSearchApplication {
 
 	public static void main(String[] args) {

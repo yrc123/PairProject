@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @SpringBootTest
+@ActiveProfiles("local-dev")
 class KeywordDaoTest {
 	@Autowired
 	KeywordDao dao;
