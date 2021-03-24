@@ -26,7 +26,8 @@ public class ControllerAspect {
         Map<String,Object> data = (Map<String, Object>) jp.getArgs()[0];
         HttpServletRequest httpReq = (HttpServletRequest) jp.getArgs()[1];
 
-        data= (Map<String, Object>) data.get("data");
+        if(data!=null)
+            data= (Map<String, Object>) data.get("data");
 
         Object resp = null;
         try {

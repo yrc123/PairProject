@@ -9,5 +9,5 @@ import java.util.Map;
 
 @Mapper
 public interface PaperDao {
-	 List<Paper> findPaperByKeywordId(int keywordId, Date publicationYear, int meetId);
+	 List<Paper> findPaperByKeywordId(Integer keywordId,Integer meetId, Date publicationYear,Integer limit);
 }

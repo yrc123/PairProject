@@ -4,6 +4,7 @@ import com.jdzy.papersearch.dao.KeywordDao;
 import org.apache.ibatis.type.Alias;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.TimeToLive;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,8 @@ public class PaperSearchService {
 	@Autowired
 	PaperSearchService service;
 
+	@Cacheable(value = "similarWord",
+			key="'word_'+#word+'_'+#limit")
 	public List<String> searchSimilarWord(String word,Integer limit){
 		if(limit==null){
 			limit=5;
@@ -35,33 +38,17 @@ public class PaperSearchService {
 		List<String> strings = new ArrayList<>(set);
 
 		limit=Math.min(limit,strings.size());
-		return strings.subList(0,limit);
+		ArrayList<String> res = new ArrayList<>(strings.subList(0, limit));
+		return res;
 	}
 
-	private List<Object> searchPaper(List<Object> searchWord,Integer orderBy,Integer time,Integer from,Integer limit,Integer page){
-
-		return null;
-	}
 	private List<Object> searchPaper(String searchWord,Integer orderBy,Integer time,Integer from,Integer limit,Integer page){
-	    return searchPaper(Collections.singletonList(searchWord),
-				orderBy,
-				time,
-				from,
-				limit,
-				page);
+	    return null;
 	}
-	@Cacheable(value = "redisCache",
+	@Cacheable(value = "searchPaper",
 			key="'paper_'+#searchWord+'_'+#orderBy+'_'+#time+'_'+#from+'_'+#page")
 	public List<Object> searchPaper(String searchWord,Object orderBy,Object time,Object from,Object limit,Object page){
 		return searchPaper(searchWord,
-				(Integer)orderBy,
-				(Integer)time,
-				(Integer)from,
-				(Integer)limit,
-				(Integer)page);
-	}
-	public List<Object> searchPaper(List<Object> searchWord,Object orderBy,Object time,Object from,Object limit,Object page){
-		return service.searchPaper(searchWord,
 				(Integer)orderBy,
 				(Integer)time,
 				(Integer)from,

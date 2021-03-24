@@ -7,12 +7,15 @@
 		select paper.id as id, paper.title as title,paper.url as url
 		from paper, paper_keyword
 		where paper_keyword.keyword_id=#{keywordId}
+		and paper.id=paper_keyword.paper_id
 		<if test="publicationYear!=null">
 			and paper.publication_year=#{publicationYear}
 		</if>
 		<if test="meetId!=null">
 			and paper.meet_id=#{meetId}
 		</if>
-		  and paper.id=paper_keyword.paper_id
+		<if test="limit!=null">
+			limit=#{limit}
+		</if>
 	</select>
 </mapper>

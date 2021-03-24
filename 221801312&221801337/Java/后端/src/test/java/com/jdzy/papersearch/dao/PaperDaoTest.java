@@ -17,7 +17,7 @@ class PaperDaoTest {
 
 	@Test
 	void findPaperByKeyword() throws ParseException {
-		List<Paper> papers = dao.findPaperByKeywordId(6, new SimpleDateFormat("yyyy").parse("2007"), 2);
+		List<Paper> papers = dao.findPaperByKeywordId(6,2, new SimpleDateFormat("yyyy").parse("2007") ,null);
 		Assert.assertEquals(85L,papers.size());
 		Assert.assertEquals(3259,papers.get(0).getId());
 	}

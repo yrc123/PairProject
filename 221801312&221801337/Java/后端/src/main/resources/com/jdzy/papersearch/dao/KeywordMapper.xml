@@ -13,9 +13,9 @@
         <if test="limit!=null">
             limit #{limit}
         </if>
-        <if test="limit==null">
-            limit 5
-        </if>
+<!--        <if test="limit==null">-->
+<!--            limit 5-->
+<!--        </if>-->
     </select>
     <select id="findTopKeyword" resultType="map">
         select keyword.id as keyword_id, keyword.keyword as keyword_name,pkeyword.keyword_num as keyword_num
@@ -24,12 +24,22 @@
              from paper_keyword
              where paper_id in (select paper.id as paper_id
                                 from paper
-                                where meet_id=#{meetId}
-                                  and publication_year=#{publicationYear}
+                                where 1=1
+                                  <if test="meetId!=null">
+                                      and meet_id=#{meetId}
+                                  </if>
+                                  <if test="publicationYear!=null">
+                                      and publication_year=#{publicationYear}
+                                  </if>
                                 group by paper_id)
              group by paper_keyword.keyword_id
              order by keyword_num desc
-                 limit 10
+<!--                <if test="limit==null">-->
+<!--                    limit 10-->
+<!--                </if>-->
+                <if test="limit!=null">
+                    limit #{limit}
+                </if>
             ) as pkeyword,keyword
         where pkeyword.keyword_id=keyword.id;
     </select>
