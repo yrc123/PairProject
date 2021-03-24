@@ -10,7 +10,12 @@
         select keyword
         from keyword
         where keyword like concat("%",concat(#{keyword},"%"))
-                limit #{limit}
+        <if test="limit!=null">
+            limit #{limit}
+        </if>
+        <if test="limit==null">
+            limit 5
+        </if>
     </select>
     <select id="findTopKeyword" resultType="map">
         select keyword.id as keyword_id, keyword.keyword as keyword_name,pkeyword.keyword_num as keyword_num
