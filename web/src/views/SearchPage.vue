@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="searchPage">
     <img alt="Vue logo" src="../assets/logo.png">
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
     <Footer/>
@@ -12,7 +12,7 @@
 import Footer from '@/components/Footer.vue'
 
 export default {
-  name: 'Home',
+  name: 'SearchPage',
   components: {
     //HelloWorld,
     Footer
