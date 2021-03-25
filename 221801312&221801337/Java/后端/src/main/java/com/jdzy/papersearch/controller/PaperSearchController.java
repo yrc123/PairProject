@@ -38,11 +38,11 @@ public class PaperSearchController {
 		HashMap<String, Object> resp = new LinkedHashMap<>();
 
 		List<Object>paperList=searchService.searchPaper((String)req.get("searchWord"),
-				req.get("orderBy"),
-				req.get("time"),
-				req.get("from"),
-				req.get("limit"),
-				req.get("page"));
+				(Integer)req.get("orderBy"),
+				(Integer) req.get("time"),
+				(Integer)req.get("from"),
+				(Integer)req.get("limit"),
+				(Integer)req.get("page"));
 		resp.put("paperList",paperList);
 		return resp;
 	}

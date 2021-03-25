@@ -1,6 +1,7 @@
 package com.jdzy.papersearch.service;
 
 import com.jdzy.papersearch.dao.KeywordDao;
+import com.jdzy.papersearch.dao.MeetDao;
 import com.jdzy.papersearch.dao.PaperDao;
 import com.jdzy.papersearch.pojo.Paper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,26 @@ public class EchartsService {
     KeywordDao kDao;
     @Autowired
     PaperDao pDao;
+    @Autowired
+    MeetDao mDao;
 
-    public Map<String,Object> getSunburstData(){
+    @Cacheable(value="sunburst",
+            key = "'data'")
+    public Map<String,Object> getSunburst(){
+        Map<String,Object> res = new HashMap<>();
 
-        return null;
+        List<Map<String, Object>> meetList = mDao.getMeetList();
+        for (Map<String, Object> meetMap : meetList) {
+            List<Map<String, Object>> keywords = kDao.findTopKeyword((Integer) meetMap.get("id"), null, 10);
+            for (Map<String, Object> keywordMap : keywords) {
+                keywordMap.put("Papers", pDao.findPaperByKeywordId((Integer) keywordMap.get("keyword_id"),
+                        (Integer) meetMap.get("id"),
+                        null,
+                        10));
+            }
+            res.put((String)meetMap.get("name"),keywords);
+        }
+        return res;
     }
     @Cacheable(value="top10",
             key = "'data'")

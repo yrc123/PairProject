@@ -47,13 +47,6 @@ public class PaperSearchService {
 	public List<Object> searchPaper(String searchWord,Integer orderBy,Integer time,Integer from,Integer limit,Integer page){
 	    return null;
 	}
-	public List<Object> searchPaper(String searchWord,Object orderBy,Object time,Object from,Object limit,Object page){
-		return searchPaper(searchWord,
-				(Integer)orderBy,
-				(Integer)time,
-				(Integer)from,
-				(Integer)limit,
-				(Integer)page);
-	}
+
 
 }

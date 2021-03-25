@@ -1,6 +1,5 @@
 package com.jdzy.papersearch.dao;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +36,7 @@ class KeywordDaoTest {
 
 	@Test
 	void findTopKeyword() throws ParseException {
-		List<Map<String, Object>> topKeyword = dao.findTopKeyword(1, new SimpleDateFormat("yyyy").parse("2001"),null);
+		List<Map<String, Object>> topKeyword = dao.findTopKeyword(1, new SimpleDateFormat("yyyy").parse("2001"),10);
 		Assert.assertEquals(10,topKeyword.size());
 		Assert.assertEquals(44L,topKeyword.get(0).get("keyword_num"));
 	}

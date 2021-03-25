@@ -23,4 +23,9 @@ public class EchartController {
         return eService.getTop10();
     }
 
+    @PostMapping("/sunburst")
+    @ResponseBody
+    public Map<String,Object> getSunburst(@RequestBody Map<String,Object> req, HttpServletRequest http){
+        return eService.getSunburst();
+    }
 }

@@ -4,7 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdzy.papersearch.dao.PaperDao">
     <select id="findPaperByKeywordId" resultType="com.jdzy.papersearch.pojo.Paper">
-		select paper.id as id, paper.title as title,paper.url as url
+		select paper.id as id,
+			paper.title as title,
+			paper.url as url,
+			paper.publication_year as publication_year,
+			paper.meet_id as meet_id,
+			paper.abstract as abstract
 		from paper, paper_keyword
 		where paper_keyword.keyword_id=#{keywordId}
 		and paper.id=paper_keyword.paper_id

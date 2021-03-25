@@ -30,6 +30,7 @@ public class RedisConfigure  {
         configMap.put("similarWord",getMyConfigure().entryTtl(Duration.ofMinutes(3)));
         configMap.put("searchPaper",getMyConfigure().entryTtl(Duration.ofMinutes(5)));
         configMap.put("top10",getMyConfigure().entryTtl(Duration.ofDays(1)));
+        configMap.put("sunburst",getMyConfigure().entryTtl(Duration.ofDays(1)));
 
         RedisCacheManager redisCacheManager = RedisCacheManager.builder(connectionFactory)
                 .cacheDefaults(getMyConfigure())

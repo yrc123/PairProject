@@ -11,5 +11,4 @@ public interface KeywordDao {
 	Integer findKeywordIdByName(String keyword);
 	List<Map<String,Object>> findTopKeyword(Integer meetId, Date publicationYear,Integer limit);
 	List<String> findSimilarKeyword(String keyword,Integer limit);
-
 }
