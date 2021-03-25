@@ -42,11 +42,11 @@ public class PaperSearchService {
 		return res;
 	}
 
-	private List<Object> searchPaper(String searchWord,Integer orderBy,Integer time,Integer from,Integer limit,Integer page){
-	    return null;
-	}
 	@Cacheable(value = "searchPaper",
 			key="'paper_'+#searchWord+'_'+#orderBy+'_'+#time+'_'+#from+'_'+#page")
+	public List<Object> searchPaper(String searchWord,Integer orderBy,Integer time,Integer from,Integer limit,Integer page){
+	    return null;
+	}
 	public List<Object> searchPaper(String searchWord,Object orderBy,Object time,Object from,Object limit,Object page){
 		return searchPaper(searchWord,
 				(Integer)orderBy,

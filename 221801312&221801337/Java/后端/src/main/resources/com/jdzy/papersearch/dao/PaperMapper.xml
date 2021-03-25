@@ -15,7 +15,7 @@
 			and paper.meet_id=#{meetId}
 		</if>
 		<if test="limit!=null">
-			limit=#{limit}
+			limit #{limit}
 		</if>
 	</select>
 </mapper>

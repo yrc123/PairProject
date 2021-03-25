@@ -37,7 +37,7 @@ class KeywordDaoTest {
 
 	@Test
 	void findTopKeyword() throws ParseException {
-		List<Map<String, String>> topKeyword = dao.findTopKeyword(1, new SimpleDateFormat("yyyy").parse("2001"),null);
+		List<Map<String, Object>> topKeyword = dao.findTopKeyword(1, new SimpleDateFormat("yyyy").parse("2001"),null);
 		Assert.assertEquals(10,topKeyword.size());
 		Assert.assertEquals(44L,topKeyword.get(0).get("keyword_num"));
 	}

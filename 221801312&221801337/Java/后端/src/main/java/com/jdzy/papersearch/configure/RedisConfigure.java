@@ -27,8 +27,8 @@ public class RedisConfigure  {
     public CacheManager initRedisCacheManager(){
         HashMap<String ,RedisCacheConfiguration> configMap = new HashMap<>();
 
-        configMap.put("similarWord",getMyConfigure().entryTtl(Duration.ofMinutes(1)));
-        configMap.put("searchPaper",getMyConfigure().entryTtl(Duration.ofMinutes(2)));
+        configMap.put("similarWord",getMyConfigure().entryTtl(Duration.ofMinutes(3)));
+        configMap.put("searchPaper",getMyConfigure().entryTtl(Duration.ofMinutes(5)));
         configMap.put("top10",getMyConfigure().entryTtl(Duration.ofDays(1)));
 
         RedisCacheManager redisCacheManager = RedisCacheManager.builder(connectionFactory)

@@ -9,7 +9,7 @@ import java.util.Map;
 @Mapper
 public interface KeywordDao {
 	Integer findKeywordIdByName(String keyword);
-	List<Map<String,String>> findTopKeyword(Integer meetId, Date publicationYear,Integer limit);
+	List<Map<String,Object>> findTopKeyword(Integer meetId, Date publicationYear,Integer limit);
 	List<String> findSimilarKeyword(String keyword,Integer limit);
 
 }

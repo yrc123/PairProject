@@ -24,19 +24,23 @@ public class EchartsService {
         return null;
     }
     @Cacheable(value="top10",
-            key = "data")
+            key = "'data'")
     public Map<String,Object> getTop10(){
-        List<Map<String, String>> topKeyword = kDao.findTopKeyword(null, null,null);
+        List<Map<String, Object>> topKeyword = kDao.findTopKeyword(null, null,10);
         HashMap<String, Object> resp = new HashMap<>();
         List<Integer> id = new ArrayList<>();
         List<String> name = new ArrayList<>();
         List<Integer> num = new ArrayList<>();
         List<List<Paper>> papers = new ArrayList<>();
-        for (Map<String, String> word : topKeyword) {
-            id.add(Integer.valueOf(word.get("keyword_id")));
-            name.add(word.get("keyword_name"));
-            num.add(Integer.valueOf(word.get("keyword_num")));
-            List<Paper> paper = pDao.findPaperByKeywordId(Integer.valueOf(word.get("keyword_id")), null, null, 10);
+        resp.put("keywordId",id);
+        resp.put("keywordName",name);
+        resp.put("keywordNum",num);
+        resp.put("paperList",papers);
+        for (Map<String, Object> word : topKeyword) {
+            id.add(Integer.valueOf((Integer)word.get("keyword_id")));
+            name.add((String)word.get("keyword_name"));
+            num.add(((Long)word.get("keyword_num")).intValue());
+            List<Paper> paper = pDao.findPaperByKeywordId((Integer) word.get("keyword_id"), null, null, 10);
             papers.add(paper);
         }
         return resp;
