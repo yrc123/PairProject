@@ -1,7 +1,7 @@
 <template>
   <div class="searchPage">
     <Header/>
-    <img alt="Vue logo" src="../assets/logo.png">
+    <SearchView/>
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
     <Footer/>
   </div>
@@ -12,6 +12,7 @@
 //import HelloWorld from '@/components/HelloWorld.vue'
 import Footer from '@/components/Footer.vue'
 import Header from '@/components/Header.vue'
+import SearchView from '@/components/SearchView.vue'
 
 export default {
   name: 'SearchPage',
@@ -19,6 +20,7 @@ export default {
     //HelloWorld,
     Footer,
     Header,
+    SearchView,
   }
 }
 </script>
