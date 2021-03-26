@@ -17,15 +17,15 @@ public class EchartController {
     @Autowired
     EchartsService eService;
 
-    @PostMapping("/top10")
+    @RequestMapping("/top10")
     @ResponseBody
-    public Map<String,Object> getTop10(@RequestBody Map<String,Object> req, HttpServletRequest http){
+    public Map<String,Object> getTop10(@RequestBody(required = false) Map<String,Object> req, HttpServletRequest http){
         return eService.getTop10();
     }
 
-    @PostMapping("/sunburst")
+    @RequestMapping("/sunburst")
     @ResponseBody
-    public Map<String,Object> getSunburst(@RequestBody Map<String,Object> req, HttpServletRequest http){
+    public Map<String,Object> getSunburst(@RequestBody(required = false) Map<String,Object> req, HttpServletRequest http){
         return eService.getSunburst();
     }
 }
