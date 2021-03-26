@@ -6,12 +6,17 @@
     </div> -->
     <el-row>
         <el-col :span="7"><div ></div></el-col>
-        <el-col :span="8"><div class="grid-content bg-purple">
+        <el-col :span="8" ><div class="grid-content bg-purple">
             <el-input v-model="input" placeholder="支持关键字、论文编号检索" id="seachBox"></el-input>
             </div></el-col>
         <el-col :span="4"><div class="grid-content bg-purple-light"></div></el-col>
         <el-col :span="5"><div class="grid-content bg-purple"></div></el-col>
     </el-row>  
+    <div>
+        <div><el-input v-model="input" placeholder="支持关键字、论文编号检索" id="seachBox"></el-input></div>
+        <div ><el-button type="primary">主要按钮</el-button></div>
+        
+    </div>
 </div>
 </template>
 <style>
