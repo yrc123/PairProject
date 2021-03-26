@@ -1,5 +1,6 @@
 package com.jdzy.papersearch.controller;
 
+import com.jdzy.papersearch.pojo.Keyword;
 import com.jdzy.papersearch.service.PaperSearchService;
 import com.jdzy.papersearch.tools.HttpTools;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class PaperSearchController {
 	@PostMapping("/search_word")
 	@ResponseBody
 	public Map<String,Object> searchWord(@RequestBody Map<String,Object> req, HttpServletRequest http){
-		List<String> searchWord = searchService.searchSimilarWord((String) req.get("searchWord"),(Integer) req.getOrDefault("limit",null));
+		List<Keyword> searchWord = searchService.searchSimilarWord((String) req.get("searchWord"),(Integer) req.getOrDefault("limit",null));
 
 		HashMap<String, Object> resp = new LinkedHashMap<>();
 		resp.put("searchWord",searchWord);
@@ -37,10 +38,10 @@ public class PaperSearchController {
 	public Map<String,Object> searchPaper(@RequestBody Map<String,Object> req,  HttpServletRequest http){
 		HashMap<String, Object> resp = new LinkedHashMap<>();
 
-		List<Object>paperList=searchService.searchPaper((String)req.get("searchWord"),
+		List<Map<String,Object>>paperList=searchService.searchPaper((String)req.get("searchWord"),
 				(Integer)req.get("orderBy"),
-				(Integer) req.get("time"),
-				(Integer)req.get("from"),
+				(Integer)req.get("time"),
+				(Integer)req.get("meetId"),
 				(Integer)req.get("limit"),
 				(Integer)req.get("page"));
 		resp.put("paperList",paperList);

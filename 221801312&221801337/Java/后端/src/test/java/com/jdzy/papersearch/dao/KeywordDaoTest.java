@@ -1,5 +1,6 @@
 package com.jdzy.papersearch.dao;
 
+import com.jdzy.papersearch.pojo.Keyword;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -28,10 +29,10 @@ class KeywordDaoTest {
 	}
 	@Test
 	void findSimilarKeyword(){
-		final List<String> word = dao.findSimilarKeyword("2-",null);
-		Assert.assertEquals(word.get(0),"2-point motion estimation");
-		Assert.assertEquals(word.get(1),"2-sphere");
-		Assert.assertEquals(word.get(2),"AI2-THOR");
+		final List<Keyword> word = dao.findSimilarKeyword("2-",null);
+		Assert.assertEquals(word.get(0).getKeyword(),"2-point motion estimation");
+		Assert.assertEquals(word.get(1).getKeyword(),"2-sphere");
+		Assert.assertEquals(word.get(2).getKeyword(),"AI2-THOR");
 	}
 
 	@Test

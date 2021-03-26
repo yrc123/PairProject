@@ -1,5 +1,6 @@
 package com.jdzy.papersearch.dao;
 
+import com.jdzy.papersearch.pojo.Keyword;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Date;
@@ -8,7 +9,8 @@ import java.util.Map;
 
 @Mapper
 public interface KeywordDao {
-	Integer findKeywordIdByName(String keyword);
+	Keyword findKeywordIdByName(String keyword);
 	List<Map<String,Object>> findTopKeyword(Integer meetId, Date publicationYear,Integer limit);
-	List<String> findSimilarKeyword(String keyword,Integer limit);
+	List<Keyword> findSimilarKeyword(String keyword,Integer limit);
+	List<Keyword> findKeywordByPaperId(Integer paperId,Integer limit);
 }

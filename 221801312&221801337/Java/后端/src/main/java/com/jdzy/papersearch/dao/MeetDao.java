@@ -1,5 +1,6 @@
 package com.jdzy.papersearch.dao;
 
+import com.jdzy.papersearch.pojo.Meet;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.lang.management.MemoryPoolMXBean;
@@ -8,5 +9,5 @@ import java.util.Map;
 
 @Mapper
 public interface MeetDao {
-    List<Map<String, Object>> getMeetList();
+    List<Meet> getMeetList();
 }

@@ -23,4 +23,19 @@
 			limit #{limit}
 		</if>
 	</select>
+	<select id="findPaperByWord" resultType="com.jdzy.papersearch.pojo.Paper">
+		select * from paper where title like concat("%",concat(#{searchWord},"%"))
+			<if test="publicationYears!=null">
+				and publication_year>=#{publicationYears}
+			</if>
+		<if test="meetId!=0">
+			and meet_id=#{meetId}
+		</if>
+		<if test="orderBy==1">
+			order by publication_year desc
+		</if>
+			<if test="page!=null and limit!=null">
+				limit #{page},#{limit}
+			</if>
+	</select>
 </mapper>

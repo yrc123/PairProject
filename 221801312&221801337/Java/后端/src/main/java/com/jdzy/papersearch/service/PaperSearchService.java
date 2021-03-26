@@ -1,6 +1,11 @@
 package com.jdzy.papersearch.service;
 
+import com.jdzy.papersearch.dao.AuthorDao;
 import com.jdzy.papersearch.dao.KeywordDao;
+import com.jdzy.papersearch.dao.PaperDao;
+import com.jdzy.papersearch.pojo.Author;
+import com.jdzy.papersearch.pojo.Keyword;
+import com.jdzy.papersearch.pojo.Paper;
 import org.apache.ibatis.type.Alias;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -8,7 +13,10 @@ import org.springframework.data.redis.core.TimeToLive;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import reactor.core.publisher.Flux;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -16,18 +24,22 @@ public class PaperSearchService {
 	@Autowired
 	KeywordDao kDao;
 	@Autowired
+	PaperDao pDao;
+	@Autowired
+	AuthorDao aDao;
+	@Autowired
 	PaperSearchService service;
 
 	@Cacheable(value = "similarWord",
 			key="'word_'+#word+'_'+#limit")
-	public List<String> searchSimilarWord(String word,Integer limit){
+	public List<Keyword> searchSimilarWord(String word,Integer limit){
 		if(limit==null){
 			limit=5;
 		}
 
 		String[] split = word.split(" |\\+");
-		HashSet<String> set = new LinkedHashSet<>();
-		List<String> similarKeyword = kDao.findSimilarKeyword(word,limit);
+		HashSet<Keyword> set = new LinkedHashSet<>();
+		List<Keyword> similarKeyword = kDao.findSimilarKeyword(word,limit);
 		set.addAll(kDao.findSimilarKeyword(word,limit));
 		for (String s : split) {
 			if(set.size()>=limit){
@@ -35,17 +47,36 @@ public class PaperSearchService {
 			}
 			set.addAll(kDao.findSimilarKeyword(s,limit));
 		}
-		List<String> strings = new ArrayList<>(set);
+		List<Keyword> strings = new ArrayList<>(set);
 
 		limit=Math.min(limit,strings.size());
-		ArrayList<String> res = new ArrayList<>(strings.subList(0, limit));
+		ArrayList<Keyword> res = new ArrayList<>(strings.subList(0, limit));
 		return res;
 	}
 
 	@Cacheable(value = "searchPaper",
-			key="'paper_'+#searchWord+'_'+#orderBy+'_'+#time+'_'+#from+'_'+#page")
-	public List<Object> searchPaper(String searchWord,Integer orderBy,Integer time,Integer from,Integer limit,Integer page){
-	    return null;
+			key="'paper_'+#searchWord+'_'+#orderBy+'_'+#time+'_'+#meetId+'_'+#page")
+	public List<Map<String,Object>> searchPaper(String searchWord,Integer orderBy,Integer time,Integer meetId,Integer limit,Integer page){
+		List<Map<String,Object>> res= new ArrayList<>();
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		year-=time;
+		Date years = null;
+		try {
+			years = new SimpleDateFormat("yyyy").parse(String.valueOf(year));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		List<Paper> papers = pDao.findPaperByWord(searchWord, orderBy, years, meetId, limit, page*limit);
+		for (Paper paper : papers) {
+			Map<String, Object> node = new HashMap<>();
+			List<Author> authors = new ArrayList<>(aDao.findAuthorByPaperId(paper.getId(),15));
+			List<Keyword> keywords = new ArrayList<>(kDao.findKeywordByPaperId(paper.getId(),null));
+			node.put("paper",paper);
+			node.put("authors",authors);
+			node.put("keywords",keywords);
+			res.add(node);
+		}
+		return res;
 	}
 
 
