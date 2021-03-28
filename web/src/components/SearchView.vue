@@ -12,10 +12,11 @@
              :fetch-suggestions="querySearch"
               placeholder="支持关键字、论文编号检索"
              :trigger-on-focus="false"
-            @select="handleSelect"  style="width:500px;height:100%" id="searchBox"></el-autocomplete>
-        <el-button type="primary" style="" id="searchButton"><span style="position:relative;top:-2px;">论文检索</span></el-button>
+            @select="handleSelect"
+          style="width:34%;height:100%" id="searchBox"></el-autocomplete>
+        <el-button type="primary" style="" id="searchButton"><span style="position:relative;top:-2px;" @click="clickTest">论文检索</span></el-button>
     </div>
-    
+     
 </div>
 </template>
 <style>
@@ -50,53 +51,114 @@
 </style>
 <script>
 import { defineComponent, ref, onMounted } from 'vue'
+import axios from 'axios'
+import QS from 'qs'
 
 export default defineComponent({
   setup() {
+    let keywordList;
     const restaurants = ref([]);
     const querySearch = (queryString, cb) => {
-      var results = queryString
-        ? restaurants.value.filter(createFilter(queryString))
-        : restaurants.value;
+      
+      var data={
+          data:{searchWord:queryString,limit:7}
+        };
+        //console.log(data.data.searchWord);
+        cb([]);
+        var list= postHeader(data,true);
+         list.then(
+           function(value){
+            keywordList=value.data.searchWord;
+            for(var i=0;i<keywordList.length;i++){
+              keywordList[i].value=keywordList[i].keyword;
+            }
+              cb(keywordList);
+           //restaurants.value=keywordList;
+        })
+        
+        //console.log(keywordList);
+        // console.log(Object.keys(keywordList).length);
+      //var results =restaurants.value;
       // 调用 callback 返回建议列表的数据
-      cb(results);
+      
     };
-    const createFilter = (queryString) => {
-      return (restaurant) => {
-        return (
-          restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) ===
-          0
-        );
-      };
-    };
-    const loadAll = () => {
-      return [
-        { value: "三全鲜食（北新泾店）", address: "长宁区新渔路144号" },
-        {
-          value: "Hot honey 首尔炸鸡（仙霞路）",
-          address: "上海市长宁区淞虹路661号",
-        },
-        {
-          value: "新旺角茶餐厅",
-          address: "上海市普陀区真北路988号创邑金沙谷6号楼113",
-        },
-      ];
-    };
+    // const createFilter = (queryString) => {
+    //   return (restaurant) => {
+    //     return (
+    //       restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) ===
+    //       0
+    //     );
+    //   };
+    // };
+    // const loadAll = () => {
+    //   return [
+    //     { value: "三全鲜食（北新泾店）" },
+    //     {
+    //       value: "Hot honey 首尔炸鸡（仙霞路）",
+    //     },
+    //     {
+    //       value: "新旺角茶餐厅",
+    //     },
+    //     { value: "泷千家(天山西路店)", address: "天山西路438号" },
+    //     {
+    //       value: "胖仙女纸杯蛋糕（上海凌空店）",
+    //     },
+
+    //   ];
+    // };
     const handleSelect = (item) => {
       console.log(item);
     };
     onMounted(() => {
-      restaurants.value = loadAll();
+    //   restaurants.value = loadAll();
     });
+
+    /**
+ * post方法，对应post请求
+ * @param {String} url [请求的url地址]
+ * @param {Object} params [请求时携带的参数]
+ * @param {Boolean} json [true：json格式请求头；false：FormData格式请求头]
+ */
+   function post(url, params = {}, json = false) {
+  // json格式请求头
+  const headerJSON = {
+    "Content-Type": "application/json"
+  };
+  // FormData格式请求头
+  const headerFormData = {
+    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+  };
+  return new Promise((resolve, reject) => {
+    axios
+      .post(url, json ? JSON.stringify(params) : QS.stringify(params), {
+        headers: json ? headerJSON : headerFormData
+      })
+      .then(res => {
+        resolve(res.data);
+      })
+      .catch(err => {
+        reject(err.data);
+      });
+  });
+}
+// post接口封装：
+// json或FormData格式请求头测试接口
+   function  postHeader(params, isJson) {
+    return  post('http://106.15.74.153:8080/api/search_word', params, isJson);
+}
     return {
       restaurants,
       state1: ref(''),
       state2: ref(''),
       querySearch,
-      createFilter,
-      loadAll,
+      // createFilter,
+      // loadAll,
       handleSelect,
+      // clickTest,
+      postHeader,
+      post,
     };
   },
 });
+
 </script>
