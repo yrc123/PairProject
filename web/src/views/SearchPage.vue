@@ -1,6 +1,7 @@
 <template>
   <div class="searchPage">
     <Header/>
+    <img alt="PaperRetriveal logo" src="../assets/PaperRetriveal.png" class="logo" >
     <SearchView/>
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
 

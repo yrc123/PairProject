@@ -1,6 +1,6 @@
 <template>
 <div class="SearchView">
-    <img alt="PaperRetriveal logo" src="../assets/PaperRetriveal.png" class="logo" >
+    
     <!-- <div><el-input v-model="input" placeholder="支持关键字、论文编号检索" id="seachBox"></el-input>
         <el-button type="primary">主要按钮</el-button>
     </div> -->
@@ -49,6 +49,7 @@
     top:-1.5px;
 }
 </style>
+
 <script>
 import { defineComponent, ref, onMounted } from 'vue'
 import axios from 'axios'
