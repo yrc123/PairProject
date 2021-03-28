@@ -58,15 +58,21 @@ public class PaperSearchService {
 			key="'paper_'+#searchWord+'_'+#orderBy+'_'+#time+'_'+#meetId+'_'+#page")
 	public List<Map<String,Object>> searchPaper(String searchWord,Integer orderBy,Integer time,Integer meetId,Integer limit,Integer page){
 		List<Map<String,Object>> res= new ArrayList<>();
-		int year = Calendar.getInstance().get(Calendar.YEAR);
-		year-=time;
 		Date years = null;
-		try {
-			years = new SimpleDateFormat("yyyy").parse(String.valueOf(year));
-		} catch (ParseException e) {
-			e.printStackTrace();
+		if(time!=null){
+			int year = Calendar.getInstance().get(Calendar.YEAR);
+			year-=time;
+			try {
+				years = new SimpleDateFormat("yyyy").parse(String.valueOf(year));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}
-		List<Paper> papers = pDao.findPaperByWord(searchWord, orderBy, years, meetId, limit, page*limit);
+		Integer pages=null;
+		if(limit!=null&&page!=null){
+			pages=limit*page;
+		}
+		List<Paper> papers = pDao.findPaperByWord(searchWord, orderBy, years, meetId, limit, pages);
 		for (Paper paper : papers) {
 			Map<String, Object> node = new HashMap<>();
 			List<Author> authors = new ArrayList<>(aDao.findAuthorByPaperId(paper.getId(),15));

@@ -28,7 +28,7 @@
 			<if test="publicationYears!=null">
 				and publication_year>=#{publicationYears}
 			</if>
-		<if test="meetId!=0">
+		<if test="meetId!=null">
 			and meet_id=#{meetId}
 		</if>
 		<if test="orderBy==1">
@@ -37,5 +37,10 @@
 			<if test="page!=null and limit!=null">
 				limit #{page},#{limit}
 			</if>
+<!--		<if test="page!=null">-->
+<!--			<if test="limit!=null">-->
+<!--				limit #{page},#{limit}-->
+<!--			</if>-->
+<!--		</if>-->
 	</select>
 </mapper>
