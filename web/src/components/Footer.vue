@@ -7,7 +7,7 @@
         </div></el-col>
   <el-col :span="2"><div >
         <el-dropdown :hide-on-click="false">
-        <span class="el-dropdown-link">
+        <span class="el-dropdown-link" style="margin-top:10px">
             关于我们<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <template #dropdown>

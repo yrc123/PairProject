@@ -67,7 +67,7 @@ export default defineComponent({
         //console.log(data.data.searchWord);
         cb([]);
         var list= postHeader(data,true);
-         list.then(
+        list.then(
            function(value){
             keywordList=value.data.searchWord;
             for(var i=0;i<keywordList.length;i++){
@@ -116,7 +116,7 @@ export default defineComponent({
 }
 // post接口封装：
 // json或FormData格式请求头测试接口
-   function  postHeader(params, isJson) {
+   function  postHeader(params={}, isJson) {
     return  post('http://106.15.74.153:8080/api/search_word', params, isJson);
 }
     return {

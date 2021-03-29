@@ -2,7 +2,9 @@
   <div class="searchPage">
     <SearchHeader style="position:fixed;width:100%;top:0;height:50px;padding-top:14px;"/>
     <div class="detail">
-       <div style="background-color:pink;height:5000px;z-index:0" >123123</div>
+       <div style="background-color:pink;height:5000px;z-index:0" >
+        <PaperItem/>
+       </div>
     </div>
 
     <Footer/>
@@ -14,12 +16,14 @@
 //import HelloWorld from '@/components/HelloWorld.vue'
 import Footer from '@/components/Footer.vue'
 import SearchHeader from '@/components/SearchHeader.vue'
+import PaperItem from '@/components/PaperItem.vue'
 export default {
   name: 'SearchDetail',
   components: {
     //HelloWorld,
     Footer,
     SearchHeader,
+    PaperItem,
   },
   
 

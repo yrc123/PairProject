@@ -5,7 +5,7 @@
     <SearchView/>
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
 
-    <Footer/>
+    <Footer style="position:fixed"/>
   </div>
 </template>
 

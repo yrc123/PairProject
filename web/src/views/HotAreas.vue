@@ -2,7 +2,7 @@
   <div>
     <Header/>
     <Top10/>
-    <Footer/>
+    <Footer style="position:fixed"/>
   </div>
 </template>
 
