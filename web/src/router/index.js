@@ -8,7 +8,8 @@ const routes = [
   {
     path: '/',
     name: 'SearchPage',
-    component:SearchPage 
+    component:SearchPage,
+    meta:{index:1,title: 'Paper Retrieval'},
   },
   {
     path: '/about',
@@ -21,12 +22,14 @@ const routes = [
   {
     path: '/HotAreas',
     name: 'HotAreas',
-    component: HotAreas
+    component: HotAreas,
+    meta:{index:1,title: '近年热词'},
   },
   {
     path: '/SearchDetail',
     name: 'SearchDetail',
-    component: SearchDetail
+    component: SearchDetail,
+    meta:{index:1,title: 'Paper Retrieval 搜索'},
   }
 ]
 

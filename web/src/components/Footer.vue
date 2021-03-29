@@ -40,9 +40,9 @@
     border-radius: 4px;
   }
   .footer{
-    width: 100%;
-    position: fixed;    
+    width: 100%;   
     bottom: 0;
+    margin-top: 10px;
   }
   .footer-font {
       color: #AAAAAA;

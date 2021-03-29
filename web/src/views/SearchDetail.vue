@@ -1,7 +1,10 @@
 <template>
   <div class="searchPage">
-    <SearchHeader/>
-    <div style="background-color:black;height:5000px" >123123</div>
+    <SearchHeader style="position:fixed;width:100%;top:0;height:50px;padding-top:14px;"/>
+    <div class="detail">
+       <div style="background-color:pink;height:5000px;z-index:0" >123123</div>
+    </div>
+
     <Footer/>
   </div>
 </template>
@@ -22,3 +25,10 @@ export default {
 
 }
 </script>
+
+<style>
+.detail {
+  margin-top: 70px;
+}
+::-webkit-scrollbar { width: 0 !important }
+</style>

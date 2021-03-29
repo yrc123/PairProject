@@ -13,7 +13,7 @@
               placeholder="支持关键字、论文编号检索"
              :trigger-on-focus="false"
             @select="handleSelect"
-          style="width:34%;height:100%" id="searchBox"></el-autocomplete>
+          style="width:500px;height:100%" id="searchBox"></el-autocomplete>
         <el-button type="primary" style="" id="searchButton"><span style="position:relative;top:-2px;" @click="clickTest">论文检索</span></el-button>
     </div>
      
@@ -77,36 +77,8 @@ export default defineComponent({
            //restaurants.value=keywordList;
         })
         
-        //console.log(keywordList);
-        // console.log(Object.keys(keywordList).length);
-      //var results =restaurants.value;
-      // 调用 callback 返回建议列表的数据
-      
     };
-    // const createFilter = (queryString) => {
-    //   return (restaurant) => {
-    //     return (
-    //       restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) ===
-    //       0
-    //     );
-    //   };
-    // };
-    // const loadAll = () => {
-    //   return [
-    //     { value: "三全鲜食（北新泾店）" },
-    //     {
-    //       value: "Hot honey 首尔炸鸡（仙霞路）",
-    //     },
-    //     {
-    //       value: "新旺角茶餐厅",
-    //     },
-    //     { value: "泷千家(天山西路店)", address: "天山西路438号" },
-    //     {
-    //       value: "胖仙女纸杯蛋糕（上海凌空店）",
-    //     },
-
-    //   ];
-    // };
+  
     const handleSelect = (item) => {
       console.log(item);
     };
