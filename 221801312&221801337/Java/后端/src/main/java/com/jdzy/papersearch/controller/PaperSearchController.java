@@ -18,6 +18,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import reactor.util.annotation.Nullable;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Type;
@@ -34,7 +35,7 @@ public class PaperSearchController {
 	@Autowired
 	PaperSearchService searchService;
 
-	@PostMapping(value = "/search_word")
+	@PostMapping("/search_word")
     @Operation(summary = "搜索框输入补全接口")
 	@ResponseBody
 	public Map<String,Object> searchWord(@Schema(defaultValue = OpenApiTools.searchWord)
@@ -46,13 +47,13 @@ public class PaperSearchController {
 		resp.put("searchWord",searchWord);
 		return resp;
 	}
-	@PostMapping(value = "/search_paper",name = "test")
-	@Operation(summary = "搜索接口")
+	@PostMapping("/search_paper")
+	@Operation(summary = "搜索文章接口")
 	@ResponseBody
 	public Map<String,Object> searchPaper(@Schema(defaultValue = OpenApiTools.searchPaper)
 											  @RequestBody Map<String,Object> req,
 										  HttpServletRequest http){
-		HashMap<String, Object> resp = new LinkedHashMap<>();
+		Map<String, Object> resp = new LinkedHashMap<>();
 
 		List<Map<String,Object>>paperList=searchService.searchPaper((String)req.get("searchWord"),
 				(Integer)req.get("orderBy"),
@@ -63,5 +64,24 @@ public class PaperSearchController {
 		resp.put("paperList",paperList);
 		return resp;
 	}
-
+	@GetMapping("search_paper")
+	@Operation(summary = "搜索文章接口")
+	@ResponseBody
+	public Map<String,Object> searchPaper(@Schema(defaultValue = "3D") String searchWord,
+										  @Nullable Integer orderBy,
+										  @Nullable @Schema(defaultValue = "5") Integer time,
+										  @Nullable  Integer meetId,
+										  @Nullable @Schema(defaultValue = "9") Integer limit,
+										  @Nullable @Schema(defaultValue = "0") Integer page,
+										  HttpServletRequest http){
+		Map<String, Object> resp= new LinkedHashMap<>();
+		List<Map<String,Object>>paperList=searchService.searchPaper(searchWord,
+				orderBy,
+				time,
+				meetId,
+				limit,
+				page);
+		resp.put("paperList",paperList);
+		return resp;
+	}
 }

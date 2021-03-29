@@ -21,16 +21,14 @@ public class EchartController {
     @Autowired
     EchartsService eService;
 
-    @RequestMapping(value = "/top10",
-            method = {RequestMethod.GET,RequestMethod.POST})
+    @GetMapping(value = "/top10")
     @Operation(summary = "获取top10热词和包含对应热词的论文链接")
     @ResponseBody
     public Map<String,Object> getTop10(@RequestBody(required = false) Map<String,Object> req, HttpServletRequest http){
         return eService.getTop10();
     }
 
-    @RequestMapping(value = "/sunburst",
-            method = {RequestMethod.GET,RequestMethod.POST})
+    @GetMapping(value = "/sunburst")
     @Operation(summary = "获取旭日图数据")
     @ResponseBody
     public Map<String,Object> getSunburst(@RequestBody(required = false) Map<String,Object> req, HttpServletRequest http){

@@ -23,15 +23,17 @@ public class ControllerAspect {
     public Map<String,Object> getData(ProceedingJoinPoint jp){
         Log log = LogFactory.getLog(ControllerAspect.class);
 
-        Map<String,Object> data = (Map<String, Object>) jp.getArgs()[0];
-        HttpServletRequest httpReq = (HttpServletRequest) jp.getArgs()[1];
-
-        if(data!=null)
+        Object[] args = jp.getArgs();
+        HttpServletRequest httpReq = (HttpServletRequest) args[args.length-1];
+        if(args[0]!=null&&args[0].getClass().getInterfaces()[0]==Map.class){
+            Map<String,Object> data = (Map<String, Object>) args[0];
             data= (Map<String, Object>) data.get("data");
+            args[0]=data;
+        }
 
         Object resp = null;
         try {
-            resp = jp.proceed(new Object[]{data,httpReq});
+            resp = jp.proceed(args);
         } catch (Throwable throwable) {
             log.error("Around失败");
             throwable.printStackTrace();
