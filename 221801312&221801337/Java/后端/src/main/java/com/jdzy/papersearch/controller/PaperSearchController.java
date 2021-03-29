@@ -5,10 +5,13 @@ import com.jdzy.papersearch.pojo.Keyword;
 import com.jdzy.papersearch.service.PaperSearchService;
 import com.jdzy.papersearch.tools.HttpTools;
 import com.jdzy.papersearch.tools.OpenApiTools;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -25,12 +28,14 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/api")
+@Tag(name = "搜索api")
 public class PaperSearchController {
 
 	@Autowired
 	PaperSearchService searchService;
 
 	@PostMapping(value = "/search_word")
+    @Operation(summary = "搜索框输入补全接口")
 	@ResponseBody
 	public Map<String,Object> searchWord(@Schema(defaultValue = OpenApiTools.searchWord)
 											 @RequestBody Map<String,Object> req,
@@ -41,7 +46,8 @@ public class PaperSearchController {
 		resp.put("searchWord",searchWord);
 		return resp;
 	}
-	@PostMapping("/search_paper")
+	@PostMapping(value = "/search_paper",name = "test")
+	@Operation(summary = "搜索接口")
 	@ResponseBody
 	public Map<String,Object> searchPaper(@Schema(defaultValue = OpenApiTools.searchPaper)
 											  @RequestBody Map<String,Object> req,
