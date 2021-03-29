@@ -56,8 +56,9 @@ public class PaperSearchService {
 
 	@Cacheable(value = "searchPaper",
 			key="'paper_'+#searchWord+'_'+#orderBy+'_'+#time+'_'+#meetId+'_'+#page")
-	public List<Map<String,Object>> searchPaper(String searchWord,Integer orderBy,Integer time,Integer meetId,Integer limit,Integer page){
-		List<Map<String,Object>> res= new ArrayList<>();
+	public Map<String,Object> searchPaper(String searchWord,Integer orderBy,Integer time,Integer meetId,Integer limit,Integer page){
+		Map<String, Object> resp = new HashMap<>();
+		List<Map<String,Object>> paperList= new ArrayList<>();
 		Date years = null;
 		if(time!=null){
 			int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -80,9 +81,17 @@ public class PaperSearchService {
 			node.put("paper",paper);
 			node.put("authors",authors);
 			node.put("keywords",keywords);
-			res.add(node);
+			paperList.add(node);
 		}
-		return res;
+		resp.put("paperList",paperList);
+		resp.put("count",service.searchPaperCount(searchWord,years,meetId));
+		return resp;
+	}
+	@Cacheable(value = "searchPaper",
+			key="'paper_'+#searchWord+'_'+#publicationYears+'_'+#meetId")
+	public Integer searchPaperCount(String searchWord,Date publicationYears,Integer meetId){
+		return pDao.findPaperCountByWord(searchWord,publicationYears,meetId);
+
 	}
 
 

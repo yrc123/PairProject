@@ -11,4 +11,6 @@ import java.util.Map;
 public interface PaperDao {
 	 List<Paper> findPaperByKeywordId(Integer keywordId,Integer meetId, Date publicationYear,Integer limit);
 	 List<Paper> findPaperByWord(String searchWord,Integer orderBy,Date publicationYears,Integer meetId,Integer limit,Integer page);
+
+	Integer findPaperCountByWord(String searchWord, Date publicationYears, Integer meetId);
 }

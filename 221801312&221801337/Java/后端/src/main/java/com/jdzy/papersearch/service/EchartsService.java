@@ -5,14 +5,14 @@ import com.jdzy.papersearch.dao.MeetDao;
 import com.jdzy.papersearch.dao.PaperDao;
 import com.jdzy.papersearch.pojo.Meet;
 import com.jdzy.papersearch.pojo.Paper;
+import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class EchartsService {
@@ -26,20 +26,56 @@ public class EchartsService {
     @Cacheable(value="sunburst",
             key = "'data'")
     public Map<String,Object> getSunburst(){
-        Map<String,Object> res = new HashMap<>();
-
+        SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy");
+        Map<String,Object> res = new LinkedHashMap<>();
+        List<Map<String,Object>> meetMapList = new ArrayList<>();
 
         List<Meet> meetList = mDao.getMeetList();
         for (Meet meet : meetList) {
-            List<Map<String, Object>> keywords = kDao.findTopKeyword((Integer) meet.getId(), null, 10);
-            for (Map<String, Object> keywordMap : keywords) {
-                keywordMap.put("Papers", pDao.findPaperByKeywordId((Integer) keywordMap.get("keyword_id"),
-                        (Integer) meet.getId(),
-                        null,
-                        10));
+
+            Map<String,Object> meetMap = new LinkedHashMap<>();
+            List<Map<String,Object>> yearList = new ArrayList<>();
+            for(int i=2017;i<=2020;i++){
+                Date year=null;
+                Map<String, Object> yearMap = new LinkedHashMap<>();
+                try {
+                    year = dataFormat.parse(String.valueOf(i));
+                } catch (ParseException e) {
+                    System.out.println("年份异常");
+                }
+
+                List<Map<String, Object>> keywords = kDao.findTopKeyword((Integer) meet.getId(),year , 5);
+                for (Map<String, Object> keyword : keywords) {
+                    keyword.put("name",keyword.get("keyword_name"));
+                    keyword.put("value",keyword.get("keyword_num"));
+                    List<Paper> paperList = pDao.findPaperByKeywordId((Integer) keyword.get("keyword_id"),
+                            (Integer) meet.getId(),
+                            year,
+                            5);
+                    List<Map<String,Object>> paperMapList = new ArrayList<>();
+                    for (int j = 0; j < paperList.size(); j++) {
+                        Map<String, Object> paperMap = new HashMap<>();
+                        Integer num=paperList.size();
+                        Long value= (Long) keyword.get("keyword_num");
+                        paperMap.put("name",paperList.get(j).getTitle());
+                        if(j!=paperMapList.size()-1){
+                            paperMap.put("value",value/num);
+                        }else{
+                            paperMap.put("value",value-(value/num)*num);
+                        }
+                        paperMapList.add(paperMap);
+                    }
+                    keyword.put("children",paperMapList);
+                }
+                yearMap.put("name",String.valueOf(i));
+                yearMap.put("children",keywords);
+                yearList.add(yearMap);
             }
-            res.put((String) meet.getName(),keywords);
+            meetMap.put("name",meet.getName());
+            meetMap.put("children",yearList);
+            meetMapList.add(meetMap);
         }
+        res.put("sunburst",meetMapList);
         return res;
     }
     @Cacheable(value="top10",

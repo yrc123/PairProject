@@ -53,15 +53,12 @@ public class PaperSearchController {
 	public Map<String,Object> searchPaper(@Schema(defaultValue = OpenApiTools.searchPaper)
 											  @RequestBody Map<String,Object> req,
 										  HttpServletRequest http){
-		Map<String, Object> resp = new LinkedHashMap<>();
-
-		List<Map<String,Object>>paperList=searchService.searchPaper((String)req.get("searchWord"),
+		Map<String,Object>resp=searchService.searchPaper((String)req.get("searchWord"),
 				(Integer)req.get("orderBy"),
 				(Integer)req.get("time"),
 				(Integer)req.get("meetId"),
 				(Integer)req.get("limit"),
 				(Integer)req.get("page"));
-		resp.put("paperList",paperList);
 		return resp;
 	}
 	@GetMapping("search_paper")
@@ -74,14 +71,12 @@ public class PaperSearchController {
 										  @Nullable @Schema(defaultValue = "9") Integer limit,
 										  @Nullable @Schema(defaultValue = "0") Integer page,
 										  HttpServletRequest http){
-		Map<String, Object> resp= new LinkedHashMap<>();
-		List<Map<String,Object>>paperList=searchService.searchPaper(searchWord,
+		Map<String,Object>resp=searchService.searchPaper(searchWord,
 				orderBy,
 				time,
 				meetId,
 				limit,
 				page);
-		resp.put("paperList",paperList);
 		return resp;
 	}
 }
