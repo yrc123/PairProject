@@ -1,8 +1,9 @@
 <template>
   <div>
-    <Header/>
-    <HotWords/>
-    <Top10 style="margin-bottom:100px"/>
+      <Header/>
+    <router-link to="/HotWords"><span>HotWords</span></router-link>|
+    <router-link to="/Top10"><span>Top10</span></router-link>
+    <router-view/>
     <Footer style="position:fixed"/>
   </div>
 </template>

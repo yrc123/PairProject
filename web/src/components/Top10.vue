@@ -2,7 +2,7 @@
 
   <div>
     <div id="myChart"
-     :style="{ width: '50%', height: '500px' }"></div>
+     :style="{ width: '100%', height: '500px' }"></div>
   </div>
 </template>
 
@@ -22,7 +22,7 @@ export default {
         
         axios.get('http://106.15.74.153:8080/api/top10').then(response => {
           list=response.data.data;
-          console.log(list);
+          // console.log(list);
           let myChart = echarts.init(document.getElementById("myChart"));
       // 绘制图表
       myChart.setOption({

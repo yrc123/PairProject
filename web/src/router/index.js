@@ -3,6 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import SearchPage from '../views/SearchPage.vue'
 import HotAreas from '../views/HotAreas.vue'
 import SearchDetail from '../views/SearchDetail.vue'
+import HotWords from '@/components/HotWords.vue'
+import Top10 from '@/components/Top10.vue'
 
 const routes = [
   {
@@ -24,6 +26,20 @@ const routes = [
     name: 'HotAreas',
     component: HotAreas,
     meta:{index:1,title: '近年热词'},
+    children:[
+      {
+        path:'/HotAreas',
+        redirect:HotWords
+      },
+      {
+        path:'/HotWords',
+        component: HotWords
+      },
+      {
+        path: '/Top10',
+        component: Top10
+      }
+    ],
   },
   {
     path: '/SearchDetail',
