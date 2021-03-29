@@ -11,6 +11,7 @@ import { inject, onMounted } from "vue";
 import axios from 'axios'
 import QS from 'qs'
 var x=new Array();
+var list;
 for(var i=1;i<=10;i++)x.push("热词"+i);
 export default {
   name: "data_page",
@@ -18,24 +19,32 @@ export default {
 
     let echarts = inject("ec");//引入
     onMounted(() => {//需要获取到element,所以是onMounted的Hook
-        var list= postHeader(true);
-    console.log(list);
-      let myChart = echarts.init(document.getElementById("myChart"));
+        
+        axios.get('http://106.15.74.153:8080/api/top10').then(response => {
+          list=response.data.data;
+          console.log(list);
+          let myChart = echarts.init(document.getElementById("myChart"));
       // 绘制图表
       myChart.setOption({
-        title: { text: "总用户量" },
-           tooltip: {
+        title: { text: "TOP10热词" },
+          tooltip: {
           trigger: 'axis',
           enterable: true,
           alwaysShowContent: true,
           formatter: function (params, ticket, callback) {
+               let index=params[0].dataIndex;
+               let ieee="https://ieeexplore.ieee.org/";
                var res='';
-               res+="热词："+params[0].name+"<br/>";
+               res+="热词："+list.keywordName[index]+"<br/>";
                res+="频次："+params[0].value+"<br/>";
-               res+="相关论文<br/>";
-               for(i=1;i<=10;i++){
-                    res+="<a href='#'>论文"+i+"</a><br/>"
+               res+="相关论文<br/><div class='barHtml'>";
+               for(i=0;i<10;i++){
+                    res+="<a target='_blank' href='"+ieee+list.paperList[index][i].url+
+                         "' title='"+list.paperList[index][i].title+"'>"+
+                         list.paperList[index][i].title+
+                         "</a><br/>"
                }
+               res+="</div>";
                return res;
           },
           position:function(point){
@@ -63,7 +72,7 @@ export default {
      },
      xAxis: {
           type: 'category',
-          data: x,
+          data: list.keywordName,
      },
      yAxis: {
           type: 'value'
@@ -100,7 +109,7 @@ export default {
      series: [{
           color:"#409eff",
           name: '热词',
-          data: [150,130,80,70,60,50,40,38,35,30],
+          data: list.keywordNum,
           type: 'bar'
      }]
       },true);
@@ -108,45 +117,25 @@ export default {
         myChart.resize();
       };
     });
-      /**
-      * post方法，对应post请求
-      * @param {String} url [请求的url地址]
-      * @param {Object} params [请求时携带的参数]
-      * @param {Boolean} json [true：json格式请求头；false：FormData格式请求头]
-      */
-        function post(url, params = {}, json = false) {
-        // json格式请求头
-        const headerJSON = {
-          "Content-Type": "application/json"
-        };
-        // FormData格式请求头
-        const headerFormData = {
-          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-        };
-        return new Promise((resolve, reject) => {
-          axios
-            .post(url, json ? JSON.stringify(params) : QS.stringify(params), {
-              headers: json ? headerJSON : headerFormData
-            })
-            .then(res => {
-              resolve(res.data);
-            })
-            .catch(err => {
-              reject(err.data);
-            });
         });
-      }
-      // post接口封装：
-      // json或FormData格式请求头测试接口
-        function  postHeader( isJson) {
-          return  post('http://106.15.74.153:8080/api/top10', isJson);
-      }
+      
       return{
-        postHeader,
-        post,
       };
   },
   components: {},
   mounted() {},
 };
 </script>
+
+<style>
+.barHtml{
+     width:160px;
+     text-overflow: ellipsis;
+     white-space:nowrap;
+     overflow: hidden;
+     margin:0 10px;
+}
+a{
+     text-decoration:none;
+}
+</style>
