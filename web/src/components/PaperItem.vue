@@ -1,11 +1,22 @@
 <template>
 <div>
-    <div style="border: 1px solid;display:flex;height:170px;flex-direction:column;">
-        <span class="paper-title">The Cascade-Correlation Learning Architecture</span>
-        <span class="abstract">
-            <div class="abstract-label">摘要：</div>
-            <span class="abstract-content">Cascade-Correlation is a new architecture and supervised learning algorithm for artificial neural networks. Instead of just adjusting the weights in a network of fixed topology...</span>
-        </span>
+    <div style="display:flex;height:170px;flex-direction:column;font-family:Microsoft YaHei">
+        <div><a :href="'http://ieeexplore.ieee.org/'+item.paper.url" target="_blank" class="paper-title">{{item.paper.title}}</a></div>
+        <div class="abstract"><span class="item-label" style="float:left">摘&nbsp;&nbsp;要：</span>
+             <span style="float:left;width:600px;height:42px;overflow : hidden;text-align:left;">{{item.paper.abstract}}</span>
+        </div>
+        <div><span style="float:left;margin-bottom:6px;" class="item-label">关键词：</span>
+            <div  style="width:620px;overflow : hidden;height:42px;">
+                <span style="float:left;" class="keyword"  v-for="keyword in item.keywords">{{keyword.keyword}}</span>
+            </div>
+        </div>
+        <div><span style="float:left;" class="item-label">作&nbsp;&nbsp;者：</span>
+            <div style="width:500px;overflow : hidden;height:20px;display:inline-block;float:left;">
+                <span style="float:left;" class="keyword" v-for="author in item.authors">{{author.name}}</span>
+            </div>
+                <span class="item-label" style="float:left;">年份：</span>
+                <span style="float:left;">{{ item.paper.publicationYear.substring(0,4) }}</span>
+        </div>
     </div>
 </div>
 </template>
@@ -14,33 +25,55 @@
     font-size:20px;
     font-weight:520;
     color:#0066CC;
-    display:inline-flex;
+    float:left;
+    z-index:inherit;
+    left:10px;
+    margin-bottom:10px;
 }
 .paper-title:hover{
     text-decoration:underline;
 }
 .abstract{
-    display:block;
-    width:600px;
-    height:38px;
-    overflow: hidden;
-    font-family:Microsoft YaHei;
-    font-size:0px;
-    text-overflow: ellipsis;
-    white-space:pre-wrap;
-    text-align:left;
-    
+    float:left;
+    margin-bottom:6px;
 }
-.abstract-label{
+.item-label{
     font-size:14px;
-    color: #7F7F7F;
-    display:inline;
-    height:inherit;
+    color:#7F7F7F;
 }
-.abstract-content{
+.keyword{
     font-size:14px;
-    height:100%;
-    overflow: hidden;
-    font-family:Microsoft YaHei;
+    color:#0066CC;
+    margin-right:16px
+}
+.keyword:hover{
+    text-decoration:underline;
 }
 </style>
+
+<script>
+import {  onMounted,inject  } from "vue";
+import axios from 'axios'
+var x=new Array();
+var list;
+for(var i=1;i<=10;i++)x.push("热词"+i);
+export default {
+  name: "data_page",
+  props:['paperPost'],
+  data(){
+      return{
+          item:this.paperPost
+      }
+  },
+  created(){
+          console.log(this.item);
+  },
+  setup() {
+      
+      return{
+      }
+  },
+  components: {},
+  mounted() {},
+};
+</script>

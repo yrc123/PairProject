@@ -2,7 +2,7 @@
     <div style="background:white;">
         <div class="search-header">
             <div> <img alt="PaperRetriveal logo" src="../assets/PaperRetriveal-mini.png" class="logo" ></div>
-            <div class="search-box"><SearchView/></div>
+            <div class="search-box" ><SearchView @inputValue="getInputValue"/></div>
             <div style="width:50%;margin-top: 0px;"><Header style="margin-top: 4px;"/></div>
 
         </div>
@@ -17,8 +17,13 @@ export default {
         SearchView,
         Header
     },
-    setup() {
-        
+    setup(props,{emit}) {
+        function getInputValue(val){
+            emit('inputValue',val);
+        }
+        return{
+            getInputValue,
+        }
     },
 }
 </script>

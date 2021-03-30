@@ -5,18 +5,16 @@
         <el-button type="primary">主要按钮</el-button>
     </div> -->
     <div style="height:54px;">
-        <!-- <el-input v-model="input" placeholder="支持关键字、论文编号检索" id="seachBox" style="width:500px;height:100%;"></el-input> -->
          <el-autocomplete
             class="inline-input"
-             v-model="state2"
+             v-model="inputValue"
              :fetch-suggestions="querySearch"
               placeholder="支持关键字、论文编号检索"
              :trigger-on-focus="false"
             @select="handleSelect"
           style="width:500px;height:100%" id="searchBox"></el-autocomplete>
-        <el-button type="primary" style="" id="searchButton"><span style="position:relative;top:-2px;" @click="clickTest">论文检索</span></el-button>
+        <el-button type="primary" id="searchButton" @click="passInput()"><span style="position:relative;top:-2px;" @click="clickTest">论文检索</span></el-button>
     </div>
-     
 </div>
 </template>
 <style>
@@ -56,11 +54,11 @@ import axios from 'axios'
 import QS from 'qs'
 
 export default defineComponent({
-  setup() {
+  setup(props,{emit}) {
     let keywordList;
+    var inputValue=ref("");
     const restaurants = ref([]);
     const querySearch = (queryString, cb) => {
-      
       var data={
           data:{searchWord:queryString,limit:7}
         };
@@ -118,7 +116,11 @@ export default defineComponent({
 // json或FormData格式请求头测试接口
    function  postHeader(params, isJson) {
     return  post('http://106.15.74.153:8080/api/search_word', params, isJson);
-}
+    }
+
+    function passInput(){
+      emit('inputValue',inputValue.value);
+    }
     return {
       restaurants,
       state1: ref(''),
@@ -130,6 +132,8 @@ export default defineComponent({
       // clickTest,
       postHeader,
       post,
+      passInput,
+      inputValue,
     };
   },
 });
