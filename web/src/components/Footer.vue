@@ -1,6 +1,6 @@
 <template>
 <div class="footer">
-    <el-row>
+  <el-row style="background-color:#ffffff;height:40px">
   <el-col :span="4"><div ></div></el-col>
   <el-col :span="2"><div>
           <a href="" class="footer-font">关于搜索</a>
@@ -31,7 +31,7 @@
 
 <style>
   .el-row {
-    margin-bottom: 20px;
+    padding-bottom: 20px;
     &:last-child {
       margin-bottom: 0;
     }

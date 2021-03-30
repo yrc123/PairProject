@@ -2,7 +2,6 @@
 <div>
     <div>
     <div id="HotWords" :style="{ width: '100%', height: '700px' }"></div>
-    <h1>11111111111111</h1>
   </div>
 </div>
 </template>
@@ -28,6 +27,7 @@ export default {
         console.log(data);
         data=list;
         var option= {
+            title:{ text: "近年热词"},
     backgroundColor: bgColor,
     color: colors,
     series: [{
