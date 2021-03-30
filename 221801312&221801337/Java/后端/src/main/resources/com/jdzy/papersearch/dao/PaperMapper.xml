@@ -24,37 +24,42 @@
 		</if>
 	</select>
 	<select id="findPaperByWord" resultType="com.jdzy.papersearch.pojo.Paper">
-		select * from paper where title like concat("%",concat(#{searchWord},"%"))
-			<if test="publicationYears!=null">
-				and publication_year>=#{publicationYears}
-			</if>
-		<if test="meetId!=null">
-			and meet_id=#{meetId}
-		</if>
-		<if test="orderBy==1">
-			order by publication_year desc
-		</if>
-			<if test="page!=null and limit!=null">
-				limit #{page},#{limit}
-			</if>
-<!--		<if test="page!=null">-->
-<!--			<if test="limit!=null">-->
-<!--				limit #{page},#{limit}-->
-<!--			</if>-->
-<!--		</if>-->
-	</select>
-	<select id="findPaperCountByWord" resultType="int">
-		select count(*) from paper where title like concat("%",concat(#{searchWord},"%"))
+		select * from paper
+		where title like concat("%",concat(#{searchWord},"%"))
+		or paper.id in (
+		    select paper_id
+		    from author,paper_author
+		    where author.name like concat("%",concat(#{searchWord},"%"))
+		    and author.id=paper_author.author_id
+		)
 		<if test="publicationYears!=null">
 			and publication_year>=#{publicationYears}
 		</if>
 		<if test="meetId!=null">
 			and meet_id=#{meetId}
 		</if>
-		<!--		<if test="page!=null">-->
-		<!--			<if test="limit!=null">-->
-		<!--				limit #{page},#{limit}-->
-		<!--			</if>-->
-		<!--		</if>-->
+		<if test="orderBy==1">
+			order by publication_year desc
+		</if>
+		<if test="page!=null and limit!=null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+	<select id="findPaperCountByWord" resultType="int">
+		select count(*)
+		from paper
+		where title like concat("%",concat(#{searchWord},"%"))
+		or paper.id in (
+			select paper_id
+			from author,paper_author
+			where author.name like concat("%",concat(#{searchWord},"%"))
+			and author.id=paper_author.author_id
+		)
+		<if test="publicationYears!=null">
+			and publication_year>=#{publicationYears}
+		</if>
+		<if test="meetId!=null">
+			and meet_id=#{meetId}
+		</if>
 	</select>
 </mapper>

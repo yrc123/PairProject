@@ -6,7 +6,7 @@
     <select id="findAuthorByPaperId" resultType="com.jdzy.papersearch.pojo.Author">
         select *
         from author,paper_author
-        where paper_author.id=#{paperId}
+        where paper_author.paper_id=#{paperId}
             and author.id=paper_author.author_id
         <if test="limit!=null">
             limit #{limit}
