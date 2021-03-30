@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.data.papersearch.dao.PaperDao;
 import com.data.papersearch.pojo.Paper;
-import com.data.papersearch.pojo.PaperAdapter;
+import com.data.papersearch.pojo.PaperHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,10 +19,10 @@ public class Core {
 	@Autowired
 	PaperDao dao;
 
-	PaperAdapter pa;
+	PaperHandler pa;
 	String path;
 	String meetName;
-	public Core(String path,String meetName,PaperAdapter pa){
+	public Core(String path, String meetName, PaperHandler pa){
 		this.pa=pa;
 		this.meetName=meetName;
 		this.path=path;
@@ -100,11 +100,11 @@ public class Core {
 			this.savePaper(paper);
 		}
 	}
-	public PaperAdapter getPa() {
+	public PaperHandler getPa() {
 		return pa;
 	}
 
-	public void setPa(PaperAdapter pa) {
+	public void setPa(PaperHandler pa) {
 		this.pa = pa;
 	}
 

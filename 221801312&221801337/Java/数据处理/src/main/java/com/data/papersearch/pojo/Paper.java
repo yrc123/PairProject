@@ -86,8 +86,8 @@ public class Paper {
 	public void setAuthors(List<String> authors) {
 		this.authors = authors;
 	}
-	public static PaperAdapter getDefultPaperAdapter(){
-		return new PaperAdapter() {
+	public static PaperHandler getDefultPaperHandler(){
+		return new PaperHandler() {
 			@Override
 			public Paper toPaper(JSONObject jo, String meetName, File file){
 				Paper paper = new Paper();
@@ -121,8 +121,8 @@ public class Paper {
 			}
 		};
 	}
-	public static PaperAdapter getECCVPaperAdapter(){
-		return new PaperAdapter() {
+	public static PaperHandler getECCVPaperHandler(){
+		return new PaperHandler() {
 			@Override
 			public Paper toPaper(JSONObject jo, String meetName,File file) {
 				Paper paper = new Paper();
