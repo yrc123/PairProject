@@ -25,13 +25,13 @@
 	</select>
 	<select id="findPaperByWord" resultType="com.jdzy.papersearch.pojo.Paper">
 		select * from paper
-		where title like concat("%",concat(#{searchWord},"%"))
+		where (title like concat("%",concat(#{searchWord},"%"))
 		or paper.id in (
 		    select paper_id
 		    from author,paper_author
 		    where author.name like concat("%",concat(#{searchWord},"%"))
 		    and author.id=paper_author.author_id
-		)
+		))
 		<if test="publicationYears!=null">
 			and publication_year>=#{publicationYears}
 		</if>
@@ -48,13 +48,13 @@
 	<select id="findPaperCountByWord" resultType="int">
 		select count(*)
 		from paper
-		where title like concat("%",concat(#{searchWord},"%"))
+		where (title like concat("%",concat(#{searchWord},"%"))
 		or paper.id in (
 			select paper_id
 			from author,paper_author
 			where author.name like concat("%",concat(#{searchWord},"%"))
 			and author.id=paper_author.author_id
-		)
+		))
 		<if test="publicationYears!=null">
 			and publication_year>=#{publicationYears}
 		</if>
