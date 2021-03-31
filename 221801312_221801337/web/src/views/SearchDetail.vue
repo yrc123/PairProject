@@ -9,7 +9,7 @@
          <span style="color:#7F7F7F;font-size:12px;float:left;">共搜索到{{count}}条记录</span>
          <div style="font-size:16px" class="tool" @click="showTool = !showTool"><i class="el-icon-setting"></i><span>筛选工具</span></div>
          </div>
-       <div style="min-height:500px; z-index:0; margin-left:100px" >
+       <div style="min-height:500px; z-index:0; margin-left:100px" v-if="flag" >
         <PaperItem  :paperPost="paper" v-for="paper in paperList"/>
        </div>
        <el-collapse-transition>
@@ -51,7 +51,7 @@
               <span>重新搜索</span></el-button></div>
        </div>
        </el-collapse-transition>
-      <div v-show="isPage" style="margin-bottom:40px">
+      <div v-show="isPage" style="margin-bottom:40px" v-if="flag">
         <el-pagination
           layout="prev, pager, next"
           @current-change="currentChange"
@@ -83,6 +83,7 @@ export default {
   },
   data(){
     return{
+      flag:false,
       count:0,
       test:"111",
       //paper:[1],
@@ -134,6 +135,7 @@ export default {
     }
   },
   methods:{
+
     handleScroll () {
       var scrollTop = document.body.scrollTop || document.documentElement.scrollTop
       if (scrollTop > 10) {
@@ -142,7 +144,7 @@ export default {
       else
         this.isShadow="";
     },
-    searchAgain(){
+    searchAgain(){ 
       var newURL=window.location.pathname;
       newURL+="?searchWord=";
       newURL+=window.location.search.match('((?<=searchWord=).*?(?=&|$))')[0];
@@ -165,20 +167,22 @@ export default {
                  this.count=list.count;
                  //console.log(list.paperList[0])
                  this.paper=list.paperList[0] ;
+                 this.flag=true;
       });
-      this.currentPage=parseInt(window.location.search.match('((?<=page=).*?(?=&|$))')[0])+1;
+      
     },
 
   },
   created(){
     this.getData();
+    this.currentPage=parseInt(window.location.search.match('((?<=page=).*?(?=&|$))')[0])+1 + "";
+    console.log(this.currentPage);
     if(window.location.search.match('((?<=time=).*?(?=&|$))')!=null)
       this.time=window.location.search.match('((?<=time=).*?(?=&|$))')[0];
     if(window.location.search.match('((?<=orderBy=).*?(?=&|$))')!=null)
       this.orderBy=window.location.search.match('((?<=orderBy=).*?(?=&|$))')[0];
     if(window.location.search.match('((?<=meetId=).*?(?=&|$))')!=null)
       this.from=window.location.search.match('((?<=meetId=).*?(?=&|$))')[0];
-    
     if(this.time!=null || this.from!=null || this.orderBy!=null)
       this.showTool=true;
   },
