@@ -1,6 +1,6 @@
 <template>
   <div class="searchPage">
-    <div style="z-index:2;position:fixed;" id="scroll">1111</div>
+    <div style="z-index:2;position:fixed;" id="scroll"></div>
     <SearchHeader style="position:fixed;width:100%;top:0;
                 height:50px;padding-top:14px;z-index:1;
                 box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)"
@@ -10,7 +10,7 @@
          <span style="color:#7F7F7F;font-size:12px;float:left;">共搜索到{{count}}条记录</span>
          <div style="font-size:16px" class="tool" @click="showTool = !showTool"><i class="el-icon-setting"></i><span>筛选工具</span></div>
          </div>
-       <div style="height:1600px;z-index:0; margin-left:100px" >
+       <div style="min-height:500px; z-index:0; margin-left:100px" >
         <PaperItem  :paperPost="paper" v-for="paper in paperList"/>
         
        </div>
@@ -53,10 +53,13 @@
               <span>重新搜索</span></el-button></div>
        </div>
        </el-collapse-transition>
-      <div class="block">
+      <div v-show="isPage" style="margin-bottom:40px">
         <el-pagination
           layout="prev, pager, next"
-          :total="1000">
+          @current-change="currentChange"
+          :page-size="9"
+          :current-page="currentPage"
+          :total="count">
         </el-pagination>
       </div>
     </div>
@@ -85,6 +88,7 @@ export default {
       count:0,
       test:"111",
       //paper:[1],
+      currentPage:'1',
       paperList:[1],
       showTool:false,
       orderBy:null,
@@ -122,6 +126,7 @@ export default {
           value:'3',
          label:"ECCV"
        }],
+       isPage:true,
     }
   },
   methods:{
@@ -129,7 +134,13 @@ export default {
       var newURL=window.location.pathname;
       newURL+="?searchWord=";
       newURL+=window.location.search.match('((?<=searchWord=).*?(?=&|$))')[0];
-      newURL+="&orderBy="+this.orderBy+"&time="+this.time+"&meetId="+this.from;
+      if(this.orderBy!=null)
+        newURL+="&orderBy="+this.orderBy;
+      if(this.time!=null)
+        newURL+="&time="+this.time;
+      if(this.from!=null)
+        newURL+="&meetId="+this.from
+      newURL+="&page=0";
       console.log(newURL);
       window.location.href=newURL;
     },
@@ -143,7 +154,8 @@ export default {
                  console.log(list.paperList[0])
                  this.paper=list.paperList[0] ;
       });
-    }
+      this.currentPage=parseInt(window.location.search.match('((?<=page=).*?(?=&|$))')[0])+1;
+    },
 
   },
   created(){
@@ -151,13 +163,31 @@ export default {
   },
 
   setup(context){
-      
+    function currentChange(pageIndex){
+        console.log(pageIndex-1);
+        var newURL=changeURLArg(window.location.href,'page',pageIndex-1);
+        window.location.href=newURL;
+    }
+    function changeURLArg(url,arg,arg_val){ 
+      var pattern=arg+'=([^&]*)'; 
+      var replaceText=arg+'='+arg_val; 
+      if(url.match(pattern)){ 
+          var tmp='/('+ arg+'=)([^&]*)/gi'; 
+          tmp=url.replace(eval(tmp),replaceText); 
+          return tmp; 
+      }else{ 
+          if(url.match('[\?]')){ 
+              return url+'&'+replaceText; 
+          }else{ 
+              return url+'?'+replaceText; 
+          } 
+      } 
+      return url+'\n'+arg+'\n'+arg_val; 
+    }
       var flag=false;
       function getInputValue(val){
           var newURL=window.location.pathname;
-          newURL+="?searchWord=";
-          //newURL+="&orderBy=";
-          console.log(context.root.orderBy);
+          newURL+="?page=0&searchWord=";
           newURL+=val;
           window.location.href=newURL;
       }
@@ -165,11 +195,12 @@ export default {
         var list;
         getString+=input;
         getString+="&time=5&limit=9&page=0";
-
       }
       return{
           getInputValue,
           flag,
+          changeURLArg,
+          currentChange,
       }
   }
 
@@ -205,5 +236,9 @@ export default {
 }
 .label>span{
   margin-right: 10px;
+}
+.el-pager li {
+  font-size:18px !important;
+  font-weight:normal;
 }
 </style>

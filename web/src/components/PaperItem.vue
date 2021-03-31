@@ -11,12 +11,12 @@
         </div>
         <div><span style="float:left;margin-bottom:6px;" class="item-label">关键词：</span>
             <div  style="width:620px;overflow : hidden;height:42px;">
-                <span style="float:left;" class="keyword"  v-for="keyword in item.keywords">{{keyword.keyword}}</span>
+                <a :href="'?page=0&searchWord='+keyword.keyword" target="_blank" style="float:left;" class="keyword"  v-for="keyword in item.keywords">{{keyword.keyword}}</a>
             </div>
         </div>
         <div><span style="float:left;" class="item-label">作&nbsp;&nbsp;者：</span>
             <div style="width:500px;overflow : hidden;height:20px;display:inline-block;float:left;">
-                <span style="float:left;" class="keyword" v-for="author in item.authors">{{author.name}}</span>
+                <a :href="'?page=0&searchWord='+author.name" target="_blank" style="float:left;" class="keyword" v-for="author in item.authors">{{author.name}}</a>
             </div>
                 <span class="item-label" style="float:left;">年份：</span>
                 <span style="float:left;">{{ item.paper.publicationYear.substring(0,4) }}</span>
