@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadPoolExecutor;
 
 @Controller
 @RequestMapping("/api")
@@ -34,6 +35,8 @@ public class PaperSearchController {
 
 	@Autowired
 	PaperSearchService searchService;
+	@Autowired
+	ThreadPoolExecutor threadPoolExecutor;
 
 	@PostMapping("/search_word")
     @Operation(summary = "搜索框输入补全接口")
@@ -47,7 +50,8 @@ public class PaperSearchController {
 		resp.put("searchWord",searchWord);
 		return resp;
 	}
-	@PostMapping("/search_paper")
+
+//	@PostMapping("/search_paper")
 	@Operation(summary = "搜索文章接口")
 	@ResponseBody
 	public Map<String,Object> searchPaper(@Schema(defaultValue = OpenApiTools.searchPaper)
@@ -68,15 +72,27 @@ public class PaperSearchController {
 										  @Nullable Integer orderBy,
 										  @Nullable @Schema(defaultValue = "5") Integer time,
 										  @Nullable  Integer meetId,
-										  @Nullable @Schema(defaultValue = "9") Integer limit,
-										  @Nullable @Schema(defaultValue = "0") Integer page,
+										  @Schema(defaultValue = "0") Integer page,
 										  HttpServletRequest http){
+		if(page==null)page=0;
 		Map<String,Object>resp=searchService.searchPaper(searchWord,
 				orderBy,
 				time,
 				meetId,
-				limit,
+				9,
 				page);
+		Integer finalPage = page;
+		threadPoolExecutor.execute(new Runnable() {
+			@Override
+			public void run() {
+				searchService.searchPaper(searchWord,
+						orderBy,
+						time,
+						meetId,
+						9,
+						finalPage +1);
+			}
+		});
 		return resp;
 	}
 }
