@@ -1,12 +1,9 @@
 <template>
 <div class="SearchView">
-    
-    <!-- <div><el-input v-model="input" placeholder="支持关键字、论文编号检索" id="seachBox"></el-input>
-        <el-button type="primary">主要按钮</el-button>
-    </div> -->
+
     <div style="height:54px;">
          <el-autocomplete
-            class="inline-input"
+            class="inline-input"  
              v-model="inputValue"
              :fetch-suggestions="querySearch"
               placeholder="支持关键字、论文编号检索"
@@ -58,6 +55,9 @@ export default defineComponent({
       return{
       }
   },
+  methods:{
+    
+  },
   setup(context,{emit}) {
     let keywordList;
     var inputValue=ref("");
@@ -82,14 +82,19 @@ export default defineComponent({
     };
   
     const handleSelect = (item) => {
-      console.log(item);
+      //console.log(item);
     };
     onMounted(() => {
     //   restaurants.value = loadAll();
          var searchWord =window.location.search;
-         inputValue.value=decodeURIComponent(searchWord.match('((?<=searchWord=).*?(?=&|$))')[0]);
+         if(searchWord!="")
+          inputValue.value=decodeURIComponent(searchWord.match('((?<=searchWord=).*?(?=&|$))')[0]);
+         window.addEventListener("keydown", keyDown);
     });
-
+    function keyDown(e){
+      if(e.keyCode===13)
+        passInput();
+    }
     /**
  * post方法，对应post请求
  * @param {String} url [请求的url地址]
@@ -125,21 +130,24 @@ export default defineComponent({
     }
 
     function passInput(){
-      emit('inputValue',inputValue.value);
+      var searchWord =window.location.search;
+      if(searchWord!="")
+        emit('inputValue',inputValue.value);
+      else{
+        window.location.href="/SearchDetail?page=0&searchWord="+inputValue.value;
+      }
     }
     return {
       restaurants,
       state1: ref(''),
       state2: ref(''),
       querySearch,
-      // createFilter,
-      // loadAll,
       handleSelect,
-      // clickTest,
       postHeader,
       post,
       passInput,
       inputValue,
+      keyDown,
     };
   },
 });

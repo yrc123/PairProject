@@ -1,9 +1,8 @@
 <template>
   <div class="searchPage">
-    <div style="z-index:2;position:fixed;" id="scroll"></div>
     <SearchHeader style="position:fixed;width:100%;top:0;
-                height:50px;padding-top:14px;z-index:1;
-                box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)"
+                height:50px;padding-top:14px;z-index:1;"
+                :class="isShadow"
                  @inputValue="getInputValue"/>
     <div class="detail">
        <div style="margin-left:100px;margin-bottom:10px;" >
@@ -12,7 +11,6 @@
          </div>
        <div style="min-height:500px; z-index:0; margin-left:100px" >
         <PaperItem  :paperPost="paper" v-for="paper in paperList"/>
-        
        </div>
        <el-collapse-transition>
        <div class="toolBar" v-show="showTool">
@@ -99,7 +97,7 @@ export default {
               value:'1',
               label:"最新",
           }],
-      
+      isShadow:'',
       time:null,
       timeOptions:[{
          value:'1',
@@ -129,7 +127,21 @@ export default {
        isPage:true,
     }
   },
+  mounted(){
+    let _this = this
+    window.onscroll = function () {
+      _this.handleScroll()
+    }
+  },
   methods:{
+    handleScroll () {
+      var scrollTop = document.body.scrollTop || document.documentElement.scrollTop
+      if (scrollTop > 10) {
+        this.isShadow="header-shadow";
+      }
+      else
+        this.isShadow="";
+    },
     searchAgain(){
       var newURL=window.location.pathname;
       newURL+="?searchWord=";
@@ -141,17 +153,17 @@ export default {
       if(this.from!=null)
         newURL+="&meetId="+this.from
       newURL+="&page=0";
-      console.log(newURL);
+      //console.log(newURL);
       window.location.href=newURL;
     },
-    getCount(){
+    getData(){
             var getString="http://106.15.74.153:8080/api/search_paper";
             getString+=window.location.search;
             axios.get(getString).then(response => {
                  var list=response.data.data;
                  this.paperList=list.paperList;
                  this.count=list.count;
-                 console.log(list.paperList[0])
+                 //console.log(list.paperList[0])
                  this.paper=list.paperList[0] ;
       });
       this.currentPage=parseInt(window.location.search.match('((?<=page=).*?(?=&|$))')[0])+1;
@@ -159,12 +171,24 @@ export default {
 
   },
   created(){
-    this.getCount();
+    this.getData();
+    if(window.location.search.match('((?<=time=).*?(?=&|$))')!=null)
+      this.time=window.location.search.match('((?<=time=).*?(?=&|$))')[0];
+    if(window.location.search.match('((?<=orderBy=).*?(?=&|$))')!=null)
+      this.orderBy=window.location.search.match('((?<=orderBy=).*?(?=&|$))')[0];
+    if(window.location.search.match('((?<=meetId=).*?(?=&|$))')!=null)
+      this.from=window.location.search.match('((?<=meetId=).*?(?=&|$))')[0];
+    
+    if(this.time!=null || this.from!=null || this.orderBy!=null)
+      this.showTool=true;
   },
 
   setup(context){
+    //let flag=document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight);
+    let scrollTop=window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    console.log(scrollTop);
     function currentChange(pageIndex){
-        console.log(pageIndex-1);
+        //console.log(pageIndex-1);
         var newURL=changeURLArg(window.location.href,'page',pageIndex-1);
         window.location.href=newURL;
     }
@@ -191,11 +215,6 @@ export default {
           newURL+=val;
           window.location.href=newURL;
       }
-      function searchItem(input){
-        var list;
-        getString+=input;
-        getString+="&time=5&limit=9&page=0";
-      }
       return{
           getInputValue,
           flag,
@@ -208,6 +227,9 @@ export default {
 </script>
 
 <style>
+.header-shadow{
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+}
 .detail {
   margin-top: 70px;
 }
