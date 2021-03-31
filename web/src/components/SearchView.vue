@@ -11,7 +11,6 @@
              :fetch-suggestions="querySearch"
               placeholder="支持关键字、论文编号检索"
              :trigger-on-focus="false"
-             :value="searchWord"
             @select="handleSelect"
           style="width:500px;height:100%" id="searchBox"></el-autocomplete>
         <el-button type="primary" id="searchButton" @click="passInput()"><span style="position:relative;top:-2px;" @click="clickTest">论文检索</span></el-button>
@@ -57,10 +56,9 @@ import QS from 'qs'
 export default defineComponent({
   data(){
       return{
-          searchWord:window.location.href
       }
   },
-  setup(props,{emit}) {
+  setup(context,{emit}) {
     let keywordList;
     var inputValue=ref("");
     const restaurants = ref([]);
@@ -88,6 +86,8 @@ export default defineComponent({
     };
     onMounted(() => {
     //   restaurants.value = loadAll();
+         var searchWord =window.location.search;
+         inputValue.value=decodeURIComponent(searchWord.match('((?<=searchWord=).*?(?=&|$))')[0]);
     });
 
     /**
