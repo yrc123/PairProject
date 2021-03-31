@@ -15,10 +15,15 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class RedisConfigure  {
@@ -28,8 +33,8 @@ public class RedisConfigure  {
     public CacheManager initRedisCacheManager(){
         HashMap<String ,RedisCacheConfiguration> configMap = new HashMap<>();
 
-        configMap.put("similarWord",getMyConfigure().entryTtl(Duration.ofMinutes(3)));
-        configMap.put("searchPaper",getMyConfigure().entryTtl(Duration.ofMinutes(5)));
+        configMap.put("similarWord",getMyConfigure().entryTtl(Duration.ofMinutes(20)));
+        configMap.put("searchPaper",getMyConfigure().entryTtl(Duration.ofMinutes(20)));
         configMap.put("top10",getMyConfigure().entryTtl(Duration.ofDays(1)));
         configMap.put("sunburst",getMyConfigure().entryTtl(Duration.ofDays(1)));
 
@@ -45,5 +50,14 @@ public class RedisConfigure  {
         config=config.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.json()));
         config=config.entryTtl(Duration.ofMinutes(5));
         return config;
+    }
+    @Bean("preSearchThreadPool")
+    public ThreadPoolExecutor getPreSearchThreadPool(){
+        ThreadFactory threadFactory = new CustomizableThreadFactory("springThread-pool");
+        return new ThreadPoolExecutor(2,5,10,
+                TimeUnit.MINUTES,
+                new ArrayBlockingQueue<Runnable>(100),
+                threadFactory,
+                new ThreadPoolExecutor.AbortPolicy());
     }
 }

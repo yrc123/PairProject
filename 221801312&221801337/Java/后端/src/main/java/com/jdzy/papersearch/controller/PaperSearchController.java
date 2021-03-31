@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadPoolExecutor;
 
 @Controller
 @RequestMapping("/api")
@@ -34,6 +35,8 @@ public class PaperSearchController {
 
 	@Autowired
 	PaperSearchService searchService;
+	@Autowired
+	ThreadPoolExecutor threadPoolExecutor;
 
 	@PostMapping("/search_word")
     @Operation(summary = "搜索框输入补全接口")
@@ -78,6 +81,18 @@ public class PaperSearchController {
 				meetId,
 				9,
 				page);
+		Integer finalPage = page;
+		threadPoolExecutor.execute(new Runnable() {
+			@Override
+			public void run() {
+				searchService.searchPaper(searchWord,
+						orderBy,
+						time,
+						meetId,
+						9,
+						finalPage +1);
+			}
+		});
 		return resp;
 	}
 }
