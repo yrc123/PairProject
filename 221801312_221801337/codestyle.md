@@ -36,6 +36,8 @@
 
 主要来参考[Vue官方风格指南](https://vue3js.cn/docs/zh/style-guide/)、[JS代码规范](https://github.com/BingKui/javascript-zh)、[HTML代码规范](https://www.runoob.com/html/html5-syntax.html)
 
+因为是第一次Vue实战，也是我个人第一次比较完整地开发一个前端项目，这次的有很多时候都是在比较紧急的情况下修复BUG，所以我可能有一些地方没有注意到代码风格的问题，因为这次项目我也注意到了前端代码规范的问题，希望在以后的项目中能够更加完善自己的编程风格。
+
 #### 数组
 
 * 使用字面语法创建数组
