@@ -1,4 +1,6 @@
-# 代码规范
+# 后端代码规范
+
+`221801337`
 
 - 缩进
   - 一个tab为4个空格
@@ -28,8 +30,102 @@
 
 
 
-# Vue代码规范
+# 前端代码规范
 
-主要来源于[Vue官方风格指南](https://vue3js.cn/docs/zh/style-guide/)
+`221801312`
 
-但是因为第一次实战，所以对VUE的使用还很不熟练，所以可能会有一些地方没有遵守该规范
+主要来参考[Vue官方风格指南](https://vue3js.cn/docs/zh/style-guide/)、[JS代码规范](https://github.com/BingKui/javascript-zh)、[HTML代码规范](https://www.runoob.com/html/html5-syntax.html)
+
+#### 数组
+
+* 使用字面语法创建数组
+
+```javascript
+//bad
+const arr=new Array();
+//good
+const arr=[];
+```
+
+* 使用push方法赋值而不用直接赋值
+
+```javascript
+const arr=[];
+//bad
+arr[0]='123bad';
+//good
+arr.push('123good');
+```
+
+#### 箭头函数
+
+* 使用匿名函数时，使用箭头函数
+
+```javascript
+//bad
+[1,2,3].map(function(x){
+    return ;
+});
+//good
+[1,2,3],map((x)=>{
+    return ;
+});
+```
+
+### 模块
+
+* 不用通配符导入
+
+```javascript
+//bad
+import * from 'vue'
+//good
+import onMounted from 'vue'
+```
+
+* 将所有的导入语句放在非导入语句上
+
+```javascript
+//bad
+import ref from 'vue'
+const a=ref([]);
+import onMounted from 'vue'
+//good
+import ref from 'vue'
+import onMounted from 'vue'
+const a=ref([]);
+```
+
+
+
+### HTML元素
+
+关闭所有HTML元素
+
+```html
+<!--bad-->
+<p>段落
+<!--good-->
+<p>段落</p>
+```
+
+### 属性
+
+使用小写属性名
+
+```html
+<!--bad-->
+<div CLASS="footer">
+<!--good-->
+<div class="footer">
+```
+
+### 图片
+
+使用alt属性，当图片不能显示时代替图片显示
+
+```html
+<!--good-->
+<img src="long.png" alt="Logo">
+```
+

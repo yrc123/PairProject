@@ -1,13 +1,12 @@
 <template>
 
   <div>
-    <div id="myChart"
-     :style="{ width: '100%', height: '500px' }"></div>
+    <div id="myChart" :style="{ width: '100%', height: '500px' }" ></div>
   </div>
 </template>
 
 <script>
-import { inject, onMounted } from "vue";
+import { inject, onMounted,ref } from "vue";
 import axios from 'axios'
 import QS from 'qs'
 var x=new Array();
@@ -15,15 +14,19 @@ var list;
 for(var i=1;i<=10;i++)x.push("热词"+i);
 export default {
   name: "data_page",
-  setup() {
 
+  setup() {
+     const flag=ref(false);
     let echarts = inject("ec");//引入
     onMounted(() => {//需要获取到element,所以是onMounted的Hook
-        
-        axios.get('http://106.15.74.153:8080/api/top10').then(response => {
-          list=response.data.data;
-          // console.log(list);
+        console.log("test1");
+          flag.value=true;
           let myChart = echarts.init(document.getElementById("myChart"));
+        axios.get('http://106.15.74.153:8080/api/top10').then(response => {
+
+          list=response.data.data;
+          
+
       // 绘制图表
       myChart.setOption({
         title: { text: "TOP10热词" },
@@ -120,6 +123,7 @@ export default {
         });
       
       return{
+           flag,
       };
   },
   components: {},

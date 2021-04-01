@@ -6,7 +6,7 @@
 </div>
 </template>
 <script>
-import { inject, onMounted } from "vue";
+import { inject, onMounted,ref } from "vue";
 import axios from 'axios';
 var list;
 var data;
@@ -16,15 +16,15 @@ export default {
 
   name: "data_page",
   setup() {
+    const flag=ref(false);
     let echarts = inject("ec");//引入
-    
     onMounted(() => {//需要获取到element,所以是onMounted的Hook
-    let myChart = echarts.init(document.getElementById("HotWords"));
+        console.log("test2");
+        flag.value=true;
+            let myChart = echarts.init(document.getElementById("HotWords"));
       axios.get('http://106.15.74.153:8080/api/sunburst').then(response => {
         list=response.data.data.sunburst;
-        console.log(response);
-        console.log(list);
-        console.log(data);
+
         data=list;
         var option= {
             title:{ text: "近年热词"},
@@ -101,6 +101,7 @@ export default {
         });
       
       return{
+          flag,
       };
   },
   components: {},
